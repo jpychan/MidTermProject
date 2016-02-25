@@ -94,7 +94,14 @@ post '/matches/edit' do
 end
 
 
-get '/users/' do
+get '/matches/users/:id' do
+  #@friend = User.find(params[:friend_id])
+
+  # WIP, test with User.find(1)
+  @me = User.find(1)
+  @friend = User.find(2)
+  @your_overall_win = Match.where(winner_id: @me.id, loser_id: @friend.id).count(:winner_id)
+
   erb :'/users/matches'
 end
 

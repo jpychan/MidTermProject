@@ -5,11 +5,17 @@
   <div class="col-md-12">
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h2>Your overall record against Steven</h2>
+        <h2>Your overall record against <%= @friend.name %></h2>
       </div>
       <div class="panel-body">
         <div class="col-md-6">
-          <h4>20 Wins</h4>
+          <% if @your_overall_win > 1 %>
+            <h4><%= @your_overall_win %> Wins</h4>
+          <% elsif @your_overall_win == 0 %>
+            <h4>0 win</h4>
+          <% else %>
+            <h4><%= @your_overall_win %> Win</h4>
+          <% end %>
         </div>
         <div class="col-md-6">
           <h4>10 Loses</h4>
