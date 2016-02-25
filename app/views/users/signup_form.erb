@@ -1,0 +1,6 @@
+<h1>Signup for our app</h1>
+<%= erb :show_flash %>
+<form action="/users/signup" method="POST">
+  <%= erb :'users/form_partial' %>
+  <input type="Submit" value="Signup">
+</form>
