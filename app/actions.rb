@@ -6,3 +6,8 @@ end
 get '/matches' do
   erb :'matches/index'
 end
+
+get '/matches/new' do
+  erb :'matches/new'
+end
+
