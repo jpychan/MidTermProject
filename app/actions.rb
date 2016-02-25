@@ -66,6 +66,7 @@ end
 
 #Matches Views
 get '/matches' do
+  @matches = Match.all
   erb :'matches/index'
 end
 

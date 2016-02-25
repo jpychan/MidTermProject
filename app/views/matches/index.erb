@@ -16,6 +16,18 @@
     </div>
   </div>
 
+<% @matches.each do |match| %>
+  <div class="panel panel-success">
+    <h3><%= match.game.title %></h3>
+    <p>
+      Winner:<%= match.winner.name %>
+    </p>
+    <p>
+      Loser:<%= match.loser.name %>
+    </p>
+  </div>
+<% end %>
+
   <div class="col-md-12">
     <div class="panel panel-success">
       <div class="panel-heading">
