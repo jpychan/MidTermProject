@@ -11,3 +11,6 @@ get '/matches/new' do
   erb :'matches/new'
 end
 
+get '/users/:id' do
+  erb :'/users/matches'
+end
