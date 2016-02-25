@@ -101,8 +101,8 @@ get '/matches/users/:id' do
   # WIP, test with User.find(1)
   @me = User.find(1)
   @friend = User.find(2)
-  @your_overall_win = Match.where(winner_id: @me.id, loser_id: @friend.id).count(:winner_id)
-
+  @me_overall_win = Match.where(winner_id: @me.id, loser_id: @friend.id).count(:winner_id)
+  @me_overall_lose = Match.where(winner_id: @friend.id, loser_id: @me.id).count(:loser_id)
   erb :'/users/matches'
 end
 

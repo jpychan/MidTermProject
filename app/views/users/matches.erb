@@ -9,16 +9,22 @@
       </div>
       <div class="panel-body">
         <div class="col-md-6">
-          <% if @your_overall_win > 1 %>
-            <h4><%= @your_overall_win %> Wins</h4>
-          <% elsif @your_overall_win == 0 %>
-            <h4>0 win</h4>
+          <% if @me_overall_win && @me_overall_win > 1 %>
+            <h4><%= @me_overall_win %> Wins</h4>
+          <% elsif @me_overall_win == 0 %>
+            <h4><%= @me_overall_win %> Win</h4>
           <% else %>
-            <h4><%= @your_overall_win %> Win</h4>
+            <h4><%= @me_overall_win %> Win</h4>
           <% end %>
         </div>
         <div class="col-md-6">
-          <h4>10 Loses</h4>
+          <% if @me_overall_lose && @me_overall_lose > 1 %>
+            <h4><%= @me_overall_lose %> Loses</h4>
+          <% elsif @me_overall_lose == 0 %>
+            <h4><%= @me_overall_lose %> Lose</h4>
+          <% else %>
+            <h4><%= @me_overall_lose %> Lose</h4>
+          <% end %>
         </div>
       </div>
     </div>
