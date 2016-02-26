@@ -67,8 +67,8 @@
       <div class="panel-body">
         <div class="col-md-6">
           <ol>
-          <% @me_and_myfriend_matches.each do |match| %>
-          <!-- TODO: list out all the match history for SB -->
+          <% @me_and_myfriend_matches_sb.each do |match| %>
+          <!-- list out all the match history for SB -->
               <li>MatchID: <%=match.id %>
                 Played with: <%= match.player2_id %>
                 <br>
@@ -116,10 +116,18 @@
       <div class="panel-body">
         <div class="col-md-6">
           <ol>
-            <li><h4>Win on sunday 12 feb</h4></li>
-            <li><h4>Win on sunday 12 feb</h4></li>
-            <li><h4>Win on sunday 12 feb</h4></li>
-            <li><h4>Win on sunday 12 feb</h4></li>
+          <% @me_and_myfriend_matches_fifa.each do |match| %>
+          <!-- list out all the match history for FIFA -->
+              <li>MatchID: <%=match.id %>
+                Played with: <%= match.player2_id %>
+                <br>
+                Game Played on: <%= match.created_at %>
+                <br>
+                Winner: <%= match.winner.name %>,
+                Loser: <%= match.loser.name %>
+              </li>
+              <hr width="50%" align="left">
+          <% end %>
           </ol>
         </div>
       </div>
@@ -157,10 +165,18 @@
       <div class="panel-body">
         <div class="col-md-6">
           <ol>
-            <li><h4>Win on sunday 12 feb<a href="">Edit</a></h4></li>
-            <li><h4>Win on sunday 12 feb<a href="">Edit</a></h4></li>
-            <li><h4>Win on sunday 12 feb<a href="">Edit</a></h4></li>
-            <li><h4>Win on sunday 12 feb<a href="">Edit</a></h4></li>
+          <% @me_and_myfriend_matches_nhl.each do |match| %>
+          <!-- list out all the match history for NHL -->
+              <li>MatchID: <%=match.id %>
+                Played with: <%= match.player2_id %>
+                <br>
+                Game Played on: <%= match.created_at %>
+                <br>
+                Winner: <%= match.winner.name %>,
+                Loser: <%= match.loser.name %>
+              </li>
+              <hr width="50%" align="left">
+          <% end %>
           </ol>
         </div>
       </div>
