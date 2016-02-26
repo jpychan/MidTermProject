@@ -7,7 +7,6 @@ helpers do
     @flash = session[:flash] if session[:flash]
     session[:flash] = nil
   end
-
 end
 
 before do
@@ -100,7 +99,11 @@ get '/match/edit/:id' do
   @games = Game.all
   @match = Match.find(params[:id])
   @player2 = @match.player2
-  erb :'matches/edit'
+  if @match.player1_id == @current_user.id || @match.player2_id == current_user.id
+    erb :'matches/edit'
+  else
+    redirect '/matches'
+  end
 end
 
 

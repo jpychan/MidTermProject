@@ -8,11 +8,13 @@
       <label for="game">Game: </label>
       <select class="form-control input-lg" name="game" id="game">
           <% @games.each do |game| %>
-              <option value="<%= game.id %>"  <% if @match.game_id == game.id %> selected <% end %>
-                
-                ><%= game.title %></option>
+            <option value="<%= game.id %>"
+              <% if @match.game_id == game.id %> 
+                selected
+              <% end %>
+              ><%= game.title %></option>
            <% end %>
-           </select>
+       </select>
     </fieldset>
 
     <fieldset class="form-group">
