@@ -67,6 +67,7 @@ end
 #Matches Views
 get '/matches' do
   @matches = Match.all
+  @matches_by_me = @matches.where("winner_id = ? or loser_id = ?", current_user[:id], current_user[:id])
   erb :'matches/index'
 end
 
