@@ -13,7 +13,7 @@ gem 'tux'
 gem 'bcrypt'
 
 group :development, :test do
-  gem 'pry'
+  gem 'pry-byebug'
   gem 'shotgun'
   gem 'sqlite3'
 end

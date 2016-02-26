@@ -7,6 +7,14 @@ helpers do
     @flash = session[:flash] if session[:flash]
     session[:flash] = nil
   end
+
+  def no_user_error!
+    rescue 
+      redirect '/matches/new'
+  end
+end
+
+class UserDoesNotExist < StandardError
 end
 
 before do
@@ -76,22 +84,28 @@ get '/matches/new' do
 end
 
 post '/matches/record' do
-  game_id = params[:game]
+  @game_id = params[:game]
+  @entered_username = params[:player2_username]
   @player2 = User.find_by(:username => params[:player2_username])
-  if params[:win] == "true"
-    winner_id = @current_user.id
-    loser_id = @player2.id
+  if @player2 == nil
+    session[:flash] = "The username you entered does not exist."
+    redirect '/matches/new'
   else
-    winner_id = @player2.id
-    loser_id = @current_user.id
-  end
-  @match = Match.new game_id: game_id, player1_id: @current_user.id, player2_id: @player2.id, winner_id: winner_id, loser_id: loser_id
+    if params[:win] == "true"
+      winner_id = @current_user.id
+      loser_id = @player2.id
+    else
+      winner_id = @player2.id
+      loser_id = @current_user.id
+    end
+    @match = Match.new game_id: game_id, player1_id: @current_user.id, player2_id: @player2.id, winner_id: winner_id, loser_id: loser_id
 
-  if @match.save
-    redirect '/matches'
-  else
-    session[:flash] = "There was an error."
-    redirect 'matches/new'
+    if @match.save
+      redirect '/matches'
+    else
+      session[:flash] = "There was an error."
+      redirect '/matches/new'
+    end
   end
 end
 
@@ -111,19 +125,24 @@ post '/match/edit' do
   @match = Match.find(params[:match_id])
   @match.game_id = params[:game]
   @match.player2 = User.find_by(:username => params[:player2_username])
-  if params[:win] == "true"
-    @match.winner_id = @current_user.id
-    @match.loser_id = @match.player2.id
+  if @match.player2 == nil
+    session[:flash] = "The username you entered does not exist."
+    redirect '/matches/new'
   else
-    @match.winner_id = @match.player2.id
-    @match.loser_id = @current_user.id
-  end
-  
-  if @match.save
-    redirect '/'
-  else
-    session[:flash] = "Edit failed"
-    redirect '/match/edit/:id'
+    if params[:win] == "true"
+      @match.winner_id = @current_user.id
+      @match.loser_id = @match.player2.id
+    else
+      @match.winner_id = @match.player2.id
+      @match.loser_id = @current_user.id
+    end
+    
+    if @match.save
+      redirect '/'
+    else
+      session[:flash] = "Edit failed"
+      redirect '/match/edit/:id'
+    end
   end
 end
 

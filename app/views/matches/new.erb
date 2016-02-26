@@ -1,6 +1,8 @@
  <div>
 
   <h1>Record Your Match</h1>
+
+  <%= erb :show_flash %>
   
   <form class="new-match center-block col-md-8" method="POST" action="/matches/record">
     <fieldset class="form-group">
@@ -14,7 +16,7 @@
 
     <fieldset class="form-group">
       <label for="player2_username">Opponent's Username: </label>
-      <input type="text" class="form-control input-lg" name="player2_username" id="player2_username">
+      <input type="text" class="form-control input-lg" name="player2_username" id="player2_username" value="<%= @entered_username %>">
     </fieldset>
     <div class="form-group">
       <label>Did you win?</label>
