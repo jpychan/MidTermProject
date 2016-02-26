@@ -17,9 +17,22 @@
        </select>
     </fieldset>
 
-    <fieldset class="form-group">
+    <fieldset class="form-group ui-widget">
       <label for="player2_username">Opponent's Username: </label>
       <input type="text" class="form-control input-lg" name="player2_username" id="player2_username" value="<%= @player2.username %>">
+      <div id="results">Matching usernames:</div>
+      <script type="text/javascript">
+      $(function() {
+        $("#player2_username").autocomplete({
+          source: "all_usernames",
+          select: function( event, ui ) {
+            $("#results").append("input was: '"+ this.value + "' and selection was: "+ ui.item.value +"<br/>");
+          }
+        });
+      });
+
+
+      </script>
     </fieldset>
     <div class="form-group">
       <label>Did you win?</label>

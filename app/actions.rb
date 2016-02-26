@@ -8,13 +8,22 @@ helpers do
     session[:flash] = nil
   end
 
-  def no_user_error!
-    rescue 
-      redirect '/matches/new'
-  end
-end
+  def find_usernames(term)
+    #Exact match
+    all_usernames = User.pluck(:username)
+    usernames = all_usernames.find { |u| u.downcase == term.downcase }
 
-class UserDoesNotExist < StandardError
+    #Partial match
+    if usernames == nil
+      usernames = all_usernames.find_all { |u| u.downcase.include?(term.downcase) }
+
+      max_distance = 3
+      usernames += all_usernames.find_all { |u| Text::Levenshtein.distance(u, term) < max_distance}.sort_by { |u| Text::Levenshtein.distance(u,term) }
+
+      usernames.uniq!
+     end
+     usernames 
+  end
 end
 
 before do
@@ -111,7 +120,7 @@ end
 
 get '/match/edit/:id' do
   @games = Game.all
-  @match = Match.find(params[:id])
+  @match = Match.find(19)
   @player2 = @match.player2
   if @current_user.id == @match.player1_id || @match.player2_id
     erb :'matches/edit'
@@ -152,3 +161,9 @@ end
 
 post '/matches/user/reset' do
 end
+
+get '/usernames' do
+  content_type :json
+  find_usernames(params[:term]).to_json
+end
+

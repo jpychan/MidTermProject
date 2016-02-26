@@ -66,6 +66,7 @@ GEM
       tilt (>= 1.3, < 3)
     slop (3.6.0)
     sqlite3 (1.3.11)
+    text (0.2.0)
     thread_safe (0.3.5)
     tilt (2.0.1)
     tux (0.3.0)
@@ -82,6 +83,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   bcrypt
+  json
   pry-byebug
   puma
   rake
@@ -90,6 +92,7 @@ DEPENDENCIES
   sinatra-activerecord
   sinatra-contrib
   sqlite3
+  text
   tux
 
 BUNDLED WITH
