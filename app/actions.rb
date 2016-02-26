@@ -103,6 +103,23 @@ get '/matches/users/:id' do
   @friend = User.find(2)
   @me_overall_win = Match.where(winner_id: @me.id, loser_id: @friend.id).count(:winner_id)
   @me_overall_lose = Match.where(winner_id: @friend.id, loser_id: @me.id).count(:loser_id)
+
+  #SB checker
+  @me_sb_win = Match.where(winner_id: @me.id, loser_id: @friend.id, game_id: 1).count(:winner_id)
+  @me_sb_lose = Match.where(winner_id: @friend.id, loser_id: @me.id, game_id: 1).count(:loser_id)
+
+  #FIFA checker
+  @me_fifa_win = Match.where(winner_id: @me.id, loser_id: @friend.id, game_id: 2).count(:winner_id)
+  @me_fifa_lose = Match.where(winner_id: @friend.id, loser_id: @me.id, game_id: 2).count(:loser_id)
+
+  #NHL checker
+  @me_nhl_win = Match.where(winner_id: @me.id, loser_id: @friend.id, game_id: 3).count(:winner_id)
+  @me_nhl_lose = Match.where(winner_id: @friend.id, loser_id: @me.id, game_id: 3).count(:loser_id)
+
+  # Game.find_each do |game|
+  #   puts game.matches.where(winner_id: @me.id, loser_id: @friend.id).count(:winner_id)
+  # end
+
   erb :'/users/matches'
 end
 

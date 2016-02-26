@@ -4,6 +4,7 @@
 
   <div class="col-md-12">
     <div class="panel panel-primary">
+    <% if @me_overall_win > 0 || @me_overall_lose > 0 %>
       <div class="panel-heading">
         <h2>Your overall record against <%= @friend.name %></h2>
       </div>
@@ -27,74 +28,120 @@
           <% end %>
         </div>
       </div>
+    <% else %>
+      <div class="panel-heading">
+        <h2>You do not have any record against <%= @friend.name %></h2>
+      </div>
+    <% end %>
     </div>
   </div>
-   
+
+  <% if @me_sb_win > 0 || @me_sb_lose > 0 %>
   <div class="col-md-12">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        <h2>Smash Brothers</h2>
+      </div>
+      <div class="panel-body">
+        <div class="col-md-6">
+          <% if @me_sb_win && @me_sb_win > 1 %>
+            <h4><%= @me_sb_win %> Wins</h4>
+          <% elsif @me_sb_win == 0 %>
+            <h4><%= @me_sb_win %> Win</h4>
+          <% else %>
+            <h4><%= @me_sb_win %> Win</h4>
+          <% end %>
+        </div>
+        <div class="col-md-6">
+          <% if @me_sb_lose && @me_sb_lose > 1 %>
+            <h4><%= @me_sb_lose %> Loses</h4>
+          <% elsif @me_sb_lose == 0 %>
+            <h4><%= @me_sb_lose %> Lose</h4>
+          <% else %>
+            <h4><%= @me_sb_lose %> Lose</h4>
+          <% end %>
+        </div>
+      </div>
+      <h2>Match History Last 10</h2>
+      <div class="panel-body">
+        <div class="col-md-6">
+          <ol>
+            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
+            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
+            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
+            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% end %>
+
+  <% if @me_fifa_win > 0 || @me_fifa_lose > 0 %>
+   <div class="col-md-12">
     <div class="panel panel-success">
       <div class="panel-heading">
         <h2>FIFA</h2>
       </div>
       <div class="panel-body">
         <div class="col-md-6">
-          <h4>12 Wins</h4>
+          <% if @me_fifa_win && @me_fifa_win > 1 %>
+            <h4><%= @me_fifa_win %> Wins</h4>
+          <% elsif @me_fifa_win == 0 %>
+            <h4><%= @me_fifa_win %> Win</h4>
+          <% else %>
+            <h4><%= @me_fifa_win %> Win</h4>
+          <% end %>
         </div>
         <div class="col-md-6">
-          <h4>10 Loses</h4>
+          <% if @me_fifa_lose && @me_fifa_lose > 1 %>
+            <h4><%= @me_fifa_lose %> Loses</h4>
+          <% elsif @me_fifa_lose == 0 %>
+            <h4><%= @me_fifa_lose %> Lose</h4>
+          <% else %>
+            <h4><%= @me_sb_lose %> Lose</h4>
+          <% end %>
         </div>
       </div>
       <h2>Match History Last 10</h2>
       <div class="panel-body">
         <div class="col-md-6">
           <ol>
-            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
-            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
-            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
-            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
+            <li><h4>Win on sunday 12 feb</h4></li>
+            <li><h4>Win on sunday 12 feb</h4></li>
+            <li><h4>Win on sunday 12 feb</h4></li>
+            <li><h4>Win on sunday 12 feb</h4></li>
           </ol>
         </div>
       </div>
     </div>
   </div>
+<% end %>
 
-   <div class="col-md-12">
+<% if @me_nhl_lose != 0 || @me_nhl_win != 0%>
+  <div class="col-md-12">
     <div class="panel panel-success">
       <div class="panel-heading">
         <h2>NHL</h2>
       </div>
       <div class="panel-body">
         <div class="col-md-6">
-          <h4>12 Wins</h4>
+          <% if @me_nhl_win && @me_nhl_win > 1 %>
+            <h4><%= @me_nhl_win %> Wins</h4>
+          <% elsif @me_nhl_win == 0 %>
+            <h4><%= @me_nhl_win %> Win</h4>
+          <% else %>
+            <h4><%= @me_nhl_win %> Win</h4>
+          <% end %>
         </div>
         <div class="col-md-6">
-          <h4>10 Loses</h4>
-        </div>
-      </div>
-      <h2>Match History Last 10</h2>
-      <div class="panel-body">
-        <div class="col-md-6">
-          <ol>
-            <li><h4>Win on sunday 12 feb</h4></li>
-            <li><h4>Win on sunday 12 feb</h4></li>
-            <li><h4>Win on sunday 12 feb</h4></li>
-            <li><h4>Win on sunday 12 feb</h4></li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </div>
-
- <div class="col-md-12">
-    <div class="panel panel-success">
-      <div class="panel-heading">
-        <h2>Super Smash Bros</h2>
-      </div>
-      <div class="panel-body">
-        <div class="col-md-6">
-          <h4>12 Wins</h4>
-        </div>
-        <div class="col-md-6">
-          <h4>10 Loses</h4>
+          <% if @me_nhl_lose && @me_nhl_lose > 1 %>
+            <h4><%= @me_nhl_lose %> Loses</h4>
+          <% elsif @me_nhl_lose == 0 %>
+            <h4><%= @me_nhl_lose %> Lose</h4>
+          <% else %>
+            <h4><%= @me_nhl_lose %> Lose</h4>
+          <% end %>
         </div>
       </div>
       <h2>Match History Last 10</h2>
@@ -110,6 +157,7 @@
       </div>
     </div>
   </div>
+<% end %>
 
   <a href=""><h3>Show all</h3></a>
 
