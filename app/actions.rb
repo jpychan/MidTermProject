@@ -77,9 +77,9 @@ get '/matches/new' do
 end
 
 post '/matches/record' do
-  game_id = params[:game_id]
+  game_id = params[:game]
   player2 = User.find_by(:username => params[:player2_username])
-  binding.pry
+  # binding.pry
   if params[:win] == true
     winner_id = @current_user.id
     loser_id = player2.id
@@ -87,7 +87,7 @@ post '/matches/record' do
     winner_id = player2.id
     loser_id = @current_user.id
   end
-  @match = Match.new games_id: game_id, player1_id: @current_user.id, player2_id: player2.id, winner_id: winner_id, loser_id: loser_id
+  @match = Match.new game_id: game_id, player1_id: @current_user.id, player2_id: player2.id, winner_id: winner_id, loser_id: loser_id
 
   if @match.save
     redirect '/matches'

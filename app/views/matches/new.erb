@@ -7,7 +7,7 @@
       <label for="game">Game: </label>
       <select class="form-control input-lg" name="game" id="game">
           <% @games.each do |game| %>
-              <option value=<%= game.id %>><%= game.title %></option>
+              <option value="<%= game.id %>"><%= game.title %></option>
            <% end %>
            </select>
     </fieldset>
