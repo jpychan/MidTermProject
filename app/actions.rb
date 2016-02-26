@@ -108,20 +108,20 @@ get '/matches/users/:id' do
   @me_sb_win = Match.where(winner_id: @me.id, loser_id: @friend.id, game_id: 1).count(:winner_id)
   @me_sb_lose = Match.where(winner_id: @friend.id, loser_id: @me.id, game_id: 1).count(:loser_id)
   #SB history details, last 10 games
-  @me_and_myfriend_matches_sb = Match.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).where(game_id: 1).limit(10)
+  @me_and_myfriend_matches_sb = Match.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).where(game_id: 1).order(created_at: :desc).limit(10)
 
 
   #FIFA checker
   @me_fifa_win = Match.where(winner_id: @me.id, loser_id: @friend.id, game_id: 2).count(:winner_id)
   @me_fifa_lose = Match.where(winner_id: @friend.id, loser_id: @me.id, game_id: 2).count(:loser_id)
   #FIFA history details, last 10 games
-  @me_and_myfriend_matches_fifa = Match.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).where(game_id: 2).limit(10)
+  @me_and_myfriend_matches_fifa = Match.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).where(game_id: 2).order(created_at: :desc).limit(10)
 
   #NHL checker
   @me_nhl_win = Match.where(winner_id: @me.id, loser_id: @friend.id, game_id: 3).count(:winner_id)
   @me_nhl_lose = Match.where(winner_id: @friend.id, loser_id: @me.id, game_id: 3).count(:loser_id)
   #NHL history details, last 10 games
-  @me_and_myfriend_matches_nhl = Match.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).where(game_id: 3).limit(10)
+  @me_and_myfriend_matches_nhl = Match.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).where(game_id: 3).order(created_at: :desc).limit(10)
 
   erb :'/users/matches'
 end
