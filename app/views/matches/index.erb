@@ -16,45 +16,32 @@
     </div>
   </div>
 
-  <div class="col-md-12">
-    <div class="panel panel-success">
-      <div class="panel-heading">
-        <h2>Friends Matches</h2>
-      </div>
-      <div class="panel-body">
-        <div class="col-md-6">
-          <% @opponent_names.each do |opponent| %>
-            <h4><%= opponent %></h4>
-          <% end %>
-          <img src="../images/jenny.jpg" class="img-rounded" alt="Cinque Terre" width="200">
+    <div class="col-md-12">
+      <div class="panel panel-success">
+        <div class="panel-heading">
+          <h2>Friends Matches</h2>
         </div>
-        <div class="col-md-6">
-          <% @matches_by_me.each do |match| %>
-            <div class="panel panel-success">
-              <h3><%= match.game.title %></h3>
-              <p>
-                Winner: <%= match.winner.name %>
-              </p>
-              <p>
-                Loser: <%= match.loser.name %>
-              </p>
+        <div class="panel-body">
+          <% @matches_by_me.each do |matches| %>
+            <div class="row">
+              <div class="col-md-6">
+                <h4><%= opponent(matches[0], current_user.id).name %></h4>
+                <img src="../images/jenny.jpg" class="img-rounded" alt="Cinque Terre" width="200">
+              </div>
+              <div class="col-md-6">
+              <% matches.each do |match| %>
+                <h3><%= match.game.title %></h3>
+                <p>
+                  Winner: <%= match.winner.name %>
+                </p>
+                <p>
+                  Loser: <%= match.loser.name %>
+                </p>
+              <% end %>
             </div>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
       </div>
-      <!-- <div class="panel-body">
-        <div class="col-md-6">
-          <h4>Reinhard</h4>
-          <img src="../images/reinhard-simeon.jpg" class="img-rounded" alt="Cinque Terre" width="200">
-        </div>
-        <div class="col-md-6">
-          <h4>Game 1</h4>
-          <p>Win</p>
-          <h4>Game 2</h4>
-          <p>Loss</p>
-        </div>
-      </div> -->
     </div>
   </div>
-
 </div>
