@@ -79,7 +79,7 @@ end
 post '/matches/record' do
   game_id = params[:game]
   @player2 = User.find_by(:username => params[:player2_username])
-  if params[:win] == true
+  if params[:win] == "true"
     winner_id = @current_user.id
     loser_id = @player2.id
   else
@@ -105,9 +105,40 @@ end
 
 
 post '/match/edit' do
-  @match = Match.find(:id)
-end
+  @match = Match.find(params[:match_id])
+  @match.game_id = params[:game]
+  @match.player2 = User.find_by(:username => params[:player2_username])
+  # binding.pry
+  if params[:win] == "true"
+    @match.winner_id = @current_user.id
+    @match.loser_id = @match.player2.id
+  else
+    @match.winner_id = @match.player2.id
+    @match.loser_id = @current_user.id
+  end
   
+  if @match.save
+    redirect '/'
+  else
+    session[:flash] = "Edit failed"
+    redirect '/match/edit/:id'
+  end
+end
+
+
+# username = params[:username]
+#   email = params[:email]
+#   password = params[:password]  
+
+#   @current_user.username = username
+#   @current_user.email = email
+#   @current_user.password = password if password
+#   if @current_user.save
+#     redirect '/'
+#   else
+#     session[:flash] = "Bad data, fool."
+#     redirect '/profile/edit'
+#   end
 
 get '/users/' do
   erb :'/users/matches'
