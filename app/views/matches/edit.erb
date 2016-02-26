@@ -2,12 +2,15 @@
   
 <h1>Edit Your Match</h1>
 
-<form class="new-match center-block col-md-8" method="POST" action="/matches/record">
+<form class="new-match center-block col-md-8" method="POST" action="/match/edit">
     <fieldset class="form-group">
+      <input type="hidden" name="match_id" value="<%= @match.id %>">
       <label for="game">Game: </label>
       <select class="form-control input-lg" name="game" id="game">
           <% @games.each do |game| %>
-              <option value="<%= game.id %>"><%= game.title %></option>
+              <option value="<%= game.id %>"  <% if @match.game_id == game.id %> selected <% end %>
+                
+                ><%= game.title %></option>
            <% end %>
            </select>
     </fieldset>
@@ -19,10 +22,20 @@
     <div class="form-group">
       <label>Did you win?</label>
       <div class="switch-field col-xs-12">
+
+      <% if @match.winner.id == @current_user.id %>
         <input type="radio" id="win" name="win" value="true" checked/>
         <label for="win">Yes</label>
         <input type="radio" id="loss" name="win" value="false" />
         <label for="loss">No</label>
+      <% else %>
+
+        <input type="radio" id="win" name="win" value="true"/>
+        <label for="win">Yes</label>
+        <input type="radio" id="loss" name="win" value="false" checked />
+        <label for="loss">No</label>
+      <% end %>
+
       </div>
     </div>
     <input type="submit" class="btn btn-lg btn-primary clear-fix" value="Submit">
