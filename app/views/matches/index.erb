@@ -16,18 +16,6 @@
     </div>
   </div>
 
-<% @matches.each do |match| %>
-  <div class="panel panel-success">
-    <h3><%= match.game.title %></h3>
-    <p>
-      Winner: <%= match.winner.name %>
-    </p>
-    <p>
-      Loser: <%= match.loser.name %>
-    </p>
-  </div>
-<% end %>
-
   <div class="col-md-12">
     <div class="panel panel-success">
       <div class="panel-heading">
@@ -39,10 +27,17 @@
           <img src="../images/jenny.jpg" class="img-rounded" alt="Cinque Terre" width="200">
         </div>
         <div class="col-md-6">
-          <h4>Game 1</h4>
-          <p>Win</p>
-          <h4>Game 2</h4>
-          <p>Loss</p>
+          <% @matches.each do |match| %>
+            <div class="panel panel-success">
+              <h3><%= match.game.title %></h3>
+              <p>
+                Winner: <%= match.winner.name %>
+              </p>
+              <p>
+                Loser: <%= match.loser.name %>
+              </p>
+            </div>
+          <% end %>
         </div>
       </div>
       <div class="panel-body">
