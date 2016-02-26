@@ -119,6 +119,12 @@ get '/matches/users/:id' do
   # Game.find_each do |game|
   #   puts game.matches.where(winner_id: @me.id, loser_id: @friend.id).count(:winner_id)
   # end
+  
+  #Gets all the matches played between me and my friend
+  # id 2
+  # @me_and_myfriend_matches = Match.where(player1_id: 1, player2_id: 2)
+
+  @me_and_myfriend_matches = Match.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).where(game_id: 1)
 
   erb :'/users/matches'
 end

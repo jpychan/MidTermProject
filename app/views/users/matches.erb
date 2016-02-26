@@ -63,13 +63,22 @@
         </div>
       </div>
       <h2>Match History Last 10</h2>
+      
       <div class="panel-body">
         <div class="col-md-6">
           <ol>
-            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
-            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
-            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
-            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
+          <% @me_and_myfriend_matches.each do |match| %>
+          <!-- TODO: list out all the match history for SB -->
+              <li>MatchID: <%=match.id %>
+                Played with: <%= match.player2_id %>
+                <br>
+                Game Played on: <%= match.created_at %>
+                <br>
+                Winner: <%= match.winner.name %>,
+                Loser: <%= match.loser.name %>
+              </li>
+              <hr width="50%" align="left">
+          <% end %>
           </ol>
         </div>
       </div>
