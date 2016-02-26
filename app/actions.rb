@@ -78,16 +78,15 @@ end
 
 post '/matches/record' do
   game_id = params[:game]
-  player2 = User.find_by(:username => params[:player2_username])
-  # binding.pry
+  @player2 = User.find_by(:username => params[:player2_username])
   if params[:win] == true
     winner_id = @current_user.id
-    loser_id = player2.id
+    loser_id = @player2.id
   else
-    winner_id = player2.id
+    winner_id = @player2.id
     loser_id = @current_user.id
   end
-  @match = Match.new game_id: game_id, player1_id: @current_user.id, player2_id: player2.id, winner_id: winner_id, loser_id: loser_id
+  @match = Match.new game_id: game_id, player1_id: @current_user.id, player2_id: @player2.id, winner_id: winner_id, loser_id: loser_id
 
   if @match.save
     redirect '/matches'
@@ -97,8 +96,10 @@ post '/matches/record' do
   end
 end
 
-get '/matches/edit' do
-  @match = Match.find(:id)
+get '/match/edit/:id' do
+  @games = Game.all
+  @match = Match.find(params[:id])
+  @player2 = @match.player2
   erb :'matches/edit'
 end
 
