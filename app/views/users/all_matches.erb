@@ -1,0 +1,26 @@
+<a href=""><h2>Back to overview</h2></a>
+
+  <div class="col-md-12">
+    <div class="panel panel-primary">
+    <% if @me_and_friend_all_matches.count > 0 %>
+      <div class="panel-heading">
+        <h2>All matches against <%= @friend.name %></h2>
+      </div>
+      <div class="panel-body">
+        <ol>
+          <% @me_and_friend_all_matches.each do |match| %>
+          <!-- list out all the match history for SB -->
+            <li>MatchID: <%=match.id %>
+              Game: <%= match.game.title %> | Game Played on: <%= match.created_at %> | <%= match.winner == current_user ? "WIN" : "LOSE"%> | <a href="">Edit Record</a>
+              </li>
+              <hr width="50%" align="left">
+          <% end %>
+        </ol>
+      </div>
+    <% else %>
+      <div class="panel-heading">
+        <h2>You do not have any record against <%= @friend.name %></h2>
+      </div>
+    <% end %>
+    </div>
+  </div>

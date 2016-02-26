@@ -12,8 +12,6 @@
         <div class="col-md-6">
           <% if @me_overall_win && @me_overall_win > 1 %>
             <h4><%= @me_overall_win %> Wins</h4>
-          <% elsif @me_overall_win == 0 %>
-            <h4><%= @me_overall_win %> Win</h4>
           <% else %>
             <h4><%= @me_overall_win %> Win</h4>
           <% end %>
@@ -21,8 +19,6 @@
         <div class="col-md-6">
           <% if @me_overall_lose && @me_overall_lose > 1 %>
             <h4><%= @me_overall_lose %> Loses</h4>
-          <% elsif @me_overall_lose == 0 %>
-            <h4><%= @me_overall_lose %> Lose</h4>
           <% else %>
             <h4><%= @me_overall_lose %> Lose</h4>
           <% end %>
@@ -46,8 +42,6 @@
         <div class="col-md-6">
           <% if @me_sb_win && @me_sb_win > 1 %>
             <h4><%= @me_sb_win %> Wins</h4>
-          <% elsif @me_sb_win == 0 %>
-            <h4><%= @me_sb_win %> Win</h4>
           <% else %>
             <h4><%= @me_sb_win %> Win</h4>
           <% end %>
@@ -55,8 +49,6 @@
         <div class="col-md-6">
           <% if @me_sb_lose && @me_sb_lose > 1 %>
             <h4><%= @me_sb_lose %> Loses</h4>
-          <% elsif @me_sb_lose == 0 %>
-            <h4><%= @me_sb_lose %> Lose</h4>
           <% else %>
             <h4><%= @me_sb_lose %> Lose</h4>
           <% end %>
@@ -65,17 +57,12 @@
       <h2>Match History Last 10</h2>
       
       <div class="panel-body">
-        <div class="col-md-6">
+        <div class="col-md-8">
           <ol>
           <% @me_and_myfriend_matches_sb.each do |match| %>
           <!-- list out all the match history for SB -->
-              <li>MatchID: <%=match.id %>
-                Played with: <%= match.player2_id %>
-                <br>
-                Game Played on: <%= match.created_at %>
-                <br>
-                Winner: <%= match.winner.name %>,
-                Loser: <%= match.loser.name %>
+            <li>MatchID: <%=match.id %>
+              Played with: <%= match.player2_id %> | Game Played on: <%= match.created_at %> | <%= match.winner == current_user ? "WIN" : "LOSE"%> | <a href="">Edit Record</a>
               </li>
               <hr width="50%" align="left">
           <% end %>
@@ -96,8 +83,6 @@
         <div class="col-md-6">
           <% if @me_fifa_win && @me_fifa_win > 1 %>
             <h4><%= @me_fifa_win %> Wins</h4>
-          <% elsif @me_fifa_win == 0 %>
-            <h4><%= @me_fifa_win %> Win</h4>
           <% else %>
             <h4><%= @me_fifa_win %> Win</h4>
           <% end %>
@@ -105,10 +90,8 @@
         <div class="col-md-6">
           <% if @me_fifa_lose && @me_fifa_lose > 1 %>
             <h4><%= @me_fifa_lose %> Loses</h4>
-          <% elsif @me_fifa_lose == 0 %>
-            <h4><%= @me_fifa_lose %> Lose</h4>
           <% else %>
-            <h4><%= @me_sb_lose %> Lose</h4>
+            <h4><%= @me_fifa_lose %> Lose</h4>
           <% end %>
         </div>
       </div>
@@ -118,15 +101,14 @@
           <ol>
           <% @me_and_myfriend_matches_fifa.each do |match| %>
           <!-- list out all the match history for FIFA -->
-              <li>MatchID: <%=match.id %>
-                Played with: <%= match.player2_id %>
-                <br>
-                Game Played on: <%= match.created_at %>
-                <br>
-                Winner: <%= match.winner.name %>,
-                Loser: <%= match.loser.name %>
-              </li>
-              <hr width="50%" align="left">
+            <li>MatchID: <%=match.id %>
+              Played with: <%= match.player2_id %>
+              <br>
+              Game Played on: <%= match.created_at %>
+              <br>
+              <%= match.winner == @me ? "WIN" : "LOSE" %>
+            </li>
+            <hr width="50%" align="left">
           <% end %>
           </ol>
         </div>
@@ -145,8 +127,6 @@
         <div class="col-md-6">
           <% if @me_nhl_win && @me_nhl_win > 1 %>
             <h4><%= @me_nhl_win %> Wins</h4>
-          <% elsif @me_nhl_win == 0 %>
-            <h4><%= @me_nhl_win %> Win</h4>
           <% else %>
             <h4><%= @me_nhl_win %> Win</h4>
           <% end %>
@@ -154,8 +134,6 @@
         <div class="col-md-6">
           <% if @me_nhl_lose && @me_nhl_lose > 1 %>
             <h4><%= @me_nhl_lose %> Loses</h4>
-          <% elsif @me_nhl_lose == 0 %>
-            <h4><%= @me_nhl_lose %> Lose</h4>
           <% else %>
             <h4><%= @me_nhl_lose %> Lose</h4>
           <% end %>
@@ -167,15 +145,14 @@
           <ol>
           <% @me_and_myfriend_matches_nhl.each do |match| %>
           <!-- list out all the match history for NHL -->
-              <li>MatchID: <%=match.id %>
-                Played with: <%= match.player2_id %>
-                <br>
-                Game Played on: <%= match.created_at %>
-                <br>
-                Winner: <%= match.winner.name %>,
-                Loser: <%= match.loser.name %>
-              </li>
-              <hr width="50%" align="left">
+            <li>MatchID: <%=match.id %>
+              Played with: <%= match.player2_id %>
+              <br>
+              Game Played on: <%= match.created_at %>
+              <br>
+              <%= match.winner == @me ? "WIN" : "LOSE" %>
+            </li>
+            <hr width="50%" align="left">
           <% end %>
           </ol>
         </div>
@@ -184,6 +161,6 @@
   </div>
 <% end %>
 
-  <a href=""><h3>Show all</h3></a>
+  <a href="/matches/user/:id/all"><h3>Show all</h3></a>
 
 </div>

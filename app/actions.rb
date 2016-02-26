@@ -99,31 +99,44 @@ get '/matches/users/:id' do
   #@friend = User.find(params[:friend_id])
 
   # WIP, test with User.find(1)
-  @me = User.find(1)
+  @me = current_user
   @friend = User.find(2)
-  @me_overall_win = Match.where(winner_id: @me.id, loser_id: @friend.id).count(:winner_id)
-  @me_overall_lose = Match.where(winner_id: @friend.id, loser_id: @me.id).count(:loser_id)
+  @matches = Match.all
+
+  # Query to get overall record
+  @me_overall_win = @matches.where(winner_id: @me.id, loser_id: @friend.id).count(:winner_id)
+  @me_overall_lose = @matches.where(winner_id: @friend.id, loser_id: @me.id).count(:loser_id)
 
   #SB checker win and lose counter
-  @me_sb_win = Match.where(winner_id: @me.id, loser_id: @friend.id, game_id: 1).count(:winner_id)
-  @me_sb_lose = Match.where(winner_id: @friend.id, loser_id: @me.id, game_id: 1).count(:loser_id)
+  @me_sb_win = @matches.where(winner_id: @me.id, loser_id: @friend.id, game_id: 1).count(:winner_id)
+  @me_sb_lose = @matches.where(winner_id: @friend.id, loser_id: @me.id, game_id: 1).count(:loser_id)
   #SB history details, last 10 games
-  @me_and_myfriend_matches_sb = Match.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).where(game_id: 1).order(created_at: :desc).limit(10)
+  @me_and_myfriend_matches_sb = @matches.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).where(game_id: 1).order(created_at: :desc).limit(10)
 
 
   #FIFA checker
-  @me_fifa_win = Match.where(winner_id: @me.id, loser_id: @friend.id, game_id: 2).count(:winner_id)
-  @me_fifa_lose = Match.where(winner_id: @friend.id, loser_id: @me.id, game_id: 2).count(:loser_id)
+  @me_fifa_win = @matches.where(winner_id: @me.id, loser_id: @friend.id, game_id: 2).count(:winner_id)
+  @me_fifa_lose = @matches.where(winner_id: @friend.id, loser_id: @me.id, game_id: 2).count(:loser_id)
   #FIFA history details, last 10 games
-  @me_and_myfriend_matches_fifa = Match.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).where(game_id: 2).order(created_at: :desc).limit(10)
+  @me_and_myfriend_matches_fifa = @matches.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).where(game_id: 2).order(created_at: :desc).limit(10)
 
   #NHL checker
-  @me_nhl_win = Match.where(winner_id: @me.id, loser_id: @friend.id, game_id: 3).count(:winner_id)
-  @me_nhl_lose = Match.where(winner_id: @friend.id, loser_id: @me.id, game_id: 3).count(:loser_id)
+  @me_nhl_win = @matches.where(winner_id: @me.id, loser_id: @friend.id, game_id: 3).count(:winner_id)
+  @me_nhl_lose = @matches.where(winner_id: @friend.id, loser_id: @me.id, game_id: 3).count(:loser_id)
   #NHL history details, last 10 games
-  @me_and_myfriend_matches_nhl = Match.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).where(game_id: 3).order(created_at: :desc).limit(10)
+  @me_and_myfriend_matches_nhl = @matches.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).where(game_id: 3).order(created_at: :desc).limit(10)
 
   erb :'/users/matches'
+end
+
+get '/matches/users/:id/all' do
+  @me = current_user
+  @friend = User.find(2)
+  @all_matches = Match.all
+
+  @me_and_friend_all_matches = @all_matches.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).order(created_at: :desc)
+
+  erb :'/users/all_matches'
 end
 
 post '/matches/user/reset' do
