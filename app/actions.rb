@@ -68,6 +68,27 @@ end
 get '/matches' do
   @matches = Match.all
   @matches_by_me = @matches.where("winner_id = ? or loser_id = ?", current_user[:id], current_user[:id])
+  opponents_hash = {}
+  opponents = @matches_by_me.map do |m|
+    if (m.winner_id != 4)
+      opponents_hash[m.winner_id.to_s] = {count: 0, matches: []} unless opponents_hash[m.winner_id.to_s]
+      opponents_hash[m.winner_id.to_s][:count] += 1
+      opponents_hash[m.winner_id.to_s][:user_obj] = User.find(m.winner_id)
+      opponents_hash[m.winner_id.to_s][:matches] << m
+    else
+      opponents_hash[m.loser_id.to_s] = {count: 0, matches: []} unless opponents_hash[m.loser_id.to_s]
+      opponents_hash[m.loser_id.to_s][:count] += 1
+      opponents_hash[m.loser_id.to_s][:user_obj] = User.find(m.loser_id)
+      opponents_hash[m.loser_id.to_s][:matches] << m
+    end
+  end
+  @sorted_opponents = opponents_hash.sort_by { |key, value| value[:count]}.reverse
+
+  @opponent_names = []
+  @sorted_opponents.each do |opponent|
+    @opponent_names << opponent[1][:user_obj].name
+  end
+  binding.pry
   erb :'matches/index'
 end
 
