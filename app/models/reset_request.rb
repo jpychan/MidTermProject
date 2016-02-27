@@ -1,4 +1,4 @@
-class ResetRequest < ActiveRecord::Base
+ class ResetRequest < ActiveRecord::Base
 
   belongs_to :game
 
