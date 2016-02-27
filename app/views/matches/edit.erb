@@ -25,14 +25,10 @@
       <label>Did you win?</label>
       <div class="switch-field col-xs-12">
         <input type="radio" id="win" name="win" value="true"
-          <% if @match.winner.id == @current_user.id %>
-            checked
-          <% end %> />
+          <%= @match.winner.id == @current_user.id ? 'checked' : '' %>/>
         <label for="win">Yes</label>
         <input type="radio" id="loss" name="win" value="false" 
-           <% if @match.loser.id == @current_user.id %>
-            checked
-          <% end %> />
+          <%= @match.loser.id == @current_user.id ? 'checked' : '' %>/>
         <label for="loss">No</label>
       </div>
     </div>

@@ -8,13 +8,6 @@ helpers do
     session[:flash] = nil
   end
 
-  def no_user_error!
-    rescue 
-      redirect '/matches/new'
-  end
-end
-
-class UserDoesNotExist < StandardError
 end
 
 before do
@@ -98,7 +91,12 @@ post '/matches/record' do
       winner_id = @player2.id
       loser_id = @current_user.id
     end
-    @match = Match.new game_id: game_id, player1_id: @current_user.id, player2_id: @player2.id, winner_id: winner_id, loser_id: loser_id
+    @match = Match.new(
+      game_id: @game_id,
+      player1_id: @current_user.id,
+      player2_id: @player2.id,
+      winner_id: winner_id,
+      loser_id: loser_id)
 
     if @match.save
       redirect '/matches'
@@ -113,9 +111,11 @@ get '/match/edit/:id' do
   @games = Game.all
   @match = Match.find(params[:id])
   @player2 = @match.player2
-  if @current_user.id == @match.player1_id || @match.player2_id
+
+  if @match.participant?(@current_user.id)
     erb :'matches/edit'
   else
+    session[:flash] = "You didn't participate in that match!"
     redirect '/matches'
   end
 end
@@ -138,7 +138,7 @@ post '/match/edit' do
     end
     
     if @match.save
-      redirect '/'
+      redirect '/matches'
     else
       session[:flash] = "Edit failed"
       redirect '/match/edit/:id'

@@ -14,4 +14,9 @@ belongs_to :winner, class_name: "User",
 belongs_to :loser, class_name: "User",
                     foreign_key: "loser_id"
 
+
+  #Make a method in the match model to check if the players are involved. Ex. @match.participant?(@current_user.id)
+  def participant?(current_user_id)
+    current_user_id == self.player1_id || self.player2_id
+  end
 end
