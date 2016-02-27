@@ -8,6 +8,10 @@ helpers do
     session[:flash] = nil
   end
 
+  def opponent(match, user_id)
+    match.winner_id == user_id ? match.loser : match.winner
+  end
+
 end
 
 before do
@@ -67,6 +71,11 @@ end
 #Matches Views
 get '/matches' do
   @matches = Match.all
+  @matches_by_me = @matches.where("winner_id = ? or loser_id = ?", current_user[:id], current_user[:id])
+
+  @matches_by_me = @matches_by_me.group_by { |match| opponent(match, current_user.id) }
+  @matches_by_me = @matches_by_me.values.sort { |a, b| b.length <=> a.length}
+
   erb :'matches/index'
 end
 
