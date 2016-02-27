@@ -1,104 +1,82 @@
 <div class="container-fluid">
   
-  <a href=""><h2>Back to overview</h2></a>
+  <a href="/matches"><h2>Back to overview</h2></a>
 
   <div class="col-md-12">
     <div class="panel panel-primary">
+    <% if @me_overall_win > 0 || @me_overall_lose > 0 %>
       <div class="panel-heading">
-        <h2>Your overall record against Steven</h2>
+        <h2>Your overall record against <%= @friend.name %></h2>
       </div>
       <div class="panel-body">
         <div class="col-md-6">
-          <h4>20 Wins</h4>
+          <% if @me_overall_win && @me_overall_win > 1 %>
+            <h4><%= @me_overall_win %> Wins</h4>
+          <% else %>
+            <h4><%= @me_overall_win %> Win</h4>
+          <% end %>
         </div>
         <div class="col-md-6">
-          <h4>10 Loses</h4>
+          <% if @me_overall_lose && @me_overall_lose > 1 %>
+            <h4><%= @me_overall_lose %> Loses</h4>
+          <% else %>
+            <h4><%= @me_overall_lose %> Lose</h4>
+          <% end %>
         </div>
       </div>
+    <% else %>
+      <div class="panel-heading">
+        <h2>You do not have any record against <%= @friend.name %></h2>
+      </div>
+    <% end %>
     </div>
   </div>
-   
+
+<% @game_stats.each do |game, stats| %>
+  <% if stats[:matches].size > 0 %>
   <div class="col-md-12">
     <div class="panel panel-success">
       <div class="panel-heading">
-        <h2>FIFA</h2>
+        <h2><%= game %></h2>
       </div>
       <div class="panel-body">
         <div class="col-md-6">
-          <h4>12 Wins</h4>
+          <% if stats[:wins] && stats[:wins].size > 1 %>
+            <h4><%= stats[:wins] %> Wins</h4>
+          <% else %>
+            <h4><%= stats[:wins] %> Win</h4>
+          <% end %>
         </div>
         <div class="col-md-6">
-          <h4>10 Loses</h4>
+          <% if stats[:losses] && stats[:losses].size > 1 %>
+            <h4><%= stats[:losses] %> Loses</h4>
+          <% else %>
+            <h4><%= stats[:losses] %> Lose</h4>
+          <% end %>
         </div>
       </div>
       <h2>Match History Last 10</h2>
       <div class="panel-body">
-        <div class="col-md-6">
+        <div class="col-md-8">
           <ol>
-            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
-            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
-            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
-            <li><h4>Win on sunday 12 feb <a href="">Edit</a></h4></li>
+            <% stats[:matches].each do |match|%>
+              <li>MatchID: <%= match.id %> | Game Played on: <%= match.created_at %> | <%= match.winner == @me ? "WIN" : "LOSE" %>
+            </li>
+            <hr width="50%" align="left">
+            <% end %>
           </ol>
         </div>
       </div>
     </div>
   </div>
+  <% end %>
+<% end %>
 
-   <div class="col-md-12">
-    <div class="panel panel-success">
-      <div class="panel-heading">
-        <h2>NHL</h2>
-      </div>
-      <div class="panel-body">
-        <div class="col-md-6">
-          <h4>12 Wins</h4>
-        </div>
-        <div class="col-md-6">
-          <h4>10 Loses</h4>
-        </div>
-      </div>
-      <h2>Match History Last 10</h2>
-      <div class="panel-body">
-        <div class="col-md-6">
-          <ol>
-            <li><h4>Win on sunday 12 feb</h4></li>
-            <li><h4>Win on sunday 12 feb</h4></li>
-            <li><h4>Win on sunday 12 feb</h4></li>
-            <li><h4>Win on sunday 12 feb</h4></li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </div>
 
- <div class="col-md-12">
-    <div class="panel panel-success">
-      <div class="panel-heading">
-        <h2>Super Smash Bros</h2>
-      </div>
-      <div class="panel-body">
-        <div class="col-md-6">
-          <h4>12 Wins</h4>
-        </div>
-        <div class="col-md-6">
-          <h4>10 Loses</h4>
-        </div>
-      </div>
-      <h2>Match History Last 10</h2>
-      <div class="panel-body">
-        <div class="col-md-6">
-          <ol>
-            <li><h4>Win on sunday 12 feb<a href="">Edit</a></h4></li>
-            <li><h4>Win on sunday 12 feb<a href="">Edit</a></h4></li>
-            <li><h4>Win on sunday 12 feb<a href="">Edit</a></h4></li>
-            <li><h4>Win on sunday 12 feb<a href="">Edit</a></h4></li>
-          </ol>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- <pre>
+<%= @game_stats.inspect %>
+</pre> -->
 
-  <a href=""><h3>Show all</h3></a>
+  <a href="/matches/user/<%= @friend.id%>/all"><h3>Show all matches you played with <%= @friend.name %></h3></a>
 
 </div>

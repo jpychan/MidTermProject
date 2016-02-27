@@ -8,6 +8,25 @@ helpers do
     session[:flash] = nil
   end
 
+  def opponent(match, user_id)
+    match.winner_id == user_id ? match.loser : match.winner
+
+  def get_wins(user_id, friend_id, game_id)
+    Match.where(winner_id: user_id, loser_id: friend_id, game_id: game_id).count(:winner_id)
+  end
+
+  def get_loses(user_id, friend_id, game_id)
+    Match.where(winner_id: friend_id, loser_id: user_id, game_id: game_id).count(:loser_id)
+  end
+
+  def get_recent_matches(user_id, friend_id, game_id)
+    Match.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", user_id, friend_id, friend_id, user_id).where(game_id: game_id).order(created_at: :desc).limit(10)
+  end
+
+  def get_all_matches_a_friend(user_id, friend_id)
+    Match.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).order(created_at: :desc)
+  end
+
 end
 
 before do
@@ -67,6 +86,11 @@ end
 #Matches Views
 get '/matches' do
   @matches = Match.all
+  @matches_by_me = @matches.where("winner_id = ? or loser_id = ?", current_user[:id], current_user[:id])
+
+  @matches_by_me = @matches_by_me.group_by { |match| opponent(match, current_user.id) }
+  @matches_by_me = @matches_by_me.values.sort { |a, b| b.length <=> a.length}
+
   erb :'matches/index'
 end
 
@@ -120,7 +144,6 @@ get '/match/edit/:id' do
   end
 end
 
-
 post '/match/edit' do
   @match = Match.find(params[:match_id])
   @match.game_id = params[:game]
@@ -148,6 +171,38 @@ end
 
 get '/users/' do
   erb :'/users/matches'
+end
+
+get '/matches/user/:id' do
+  @friend = User.find(params[:id])
+
+  # WIP, test with User.find(1)
+  @me = current_user
+  #@friend = User.find(3)
+  @matches = Match.all
+
+  # Query to get overall record
+  @me_overall_win = @matches.where(winner_id: @me.id, loser_id: @friend.id).count(:winner_id)
+  @me_overall_lose = @matches.where(winner_id: @friend.id, loser_id: @me.id).count(:loser_id)
+
+
+  @game_stats = {}
+  Game.all.each do |game|
+    @game_stats[game.title] = {
+      wins: get_wins(@me.id, @friend.id, game.id),
+      losses: get_loses(@me.id, @friend.id, game.id),
+      matches: get_recent_matches(@me.id, @friend.id, game.id)
+    }
+  end
+
+get '/matches/user/:id/all' do
+  @me = current_user
+  @friend = User.find(params[:id])
+  #@friend = User.find(2)
+
+  @me_and_friend_all_matches = get_all_matches_a_friend(@me.id, @friend.id)
+
+  erb :'/users/all_matches'
 end
 
 post '/matches/user/reset' do
