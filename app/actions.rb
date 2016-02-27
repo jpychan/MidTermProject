@@ -10,6 +10,7 @@ helpers do
 
   def opponent(match, user_id)
     match.winner_id == user_id ? match.loser : match.winner
+  end
 
   def get_wins(user_id, friend_id, game_id)
     Match.where(winner_id: user_id, loser_id: friend_id, game_id: game_id).count(:winner_id)
@@ -194,6 +195,9 @@ get '/matches/user/:id' do
       matches: get_recent_matches(@me.id, @friend.id, game.id)
     }
   end
+
+  erb :'/users/matches'
+end
 
 get '/matches/user/:id/all' do
   @me = current_user
