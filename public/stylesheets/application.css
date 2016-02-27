@@ -71,3 +71,20 @@
 .btn {
   margin: 10px;
 }
+
+.reset-request {
+  margin: 30px;
+  border: 1px solid green;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.reset-request .img-rounded {
+  width: 100px;
+}
+
+.reset-request .btn{
+  padding: 10px;
+  margin-top: 20%;
+}
+

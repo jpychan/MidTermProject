@@ -1,8 +1,11 @@
-class ResetRequest < ActiveRecord::Base
+ class ResetRequest < ActiveRecord::Base
 
-  belongs_to :games
+  belongs_to :game
 
-  has_and_belongs_to_many :requester, :class_name => "User"
-  has_and_belongs_to_many :requested, :class_name => "User"
+  belongs_to :requester, class_name: "User",
+                          foreign_key: "requester_id"
+
+  belongs_to :requested, class_name: "User",
+                          foreign_key: "requested_id"
 
 end
