@@ -174,6 +174,10 @@ get '/users/' do
   erb :'/users/matches'
 end
 
+get '/user/reset_requests' do
+  "Hello, world!"
+end 
+
 get '/matches/user/:id' do
   @friend = User.find(params[:id])
 
@@ -192,7 +196,8 @@ get '/matches/user/:id' do
     @game_stats[game.title] = {
       wins: get_wins(@me.id, @friend.id, game.id),
       losses: get_loses(@me.id, @friend.id, game.id),
-      matches: get_recent_matches(@me.id, @friend.id, game.id)
+      matches: get_recent_matches(@me.id, @friend.id, game.id),
+      game: game.id
     }
   end
 
@@ -210,4 +215,14 @@ get '/matches/user/:id/all' do
 end
 
 post '/matches/user/reset' do
+  @me = current_user
+  reset_request = ResetRequest.new(requester_id: @me.id, requested_id: params[:friend_id], game_id: params[:game_id])
+
+  if reset_request.save
+    redirect "/user/reset_requests"
+  else
+    session[:flash] = "Fail to request a reset"
+    redirect "/matches/user/#{params[:friend_id]}"
+  end
+
 end
