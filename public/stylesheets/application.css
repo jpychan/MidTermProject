@@ -4,6 +4,10 @@
   background-position: center;
 }
 
+.homepage {
+  padding-left: 0px;
+}
+
 .jumbotron h1{
   color: #ffffff;
 }
