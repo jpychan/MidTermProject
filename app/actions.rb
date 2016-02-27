@@ -152,3 +152,7 @@ end
 
 post '/matches/user/reset' do
 end
+
+get '/user/reset_requests' do
+  erb :'/users/reset_requests'
+end
