@@ -88,3 +88,14 @@
   margin-top: 20%;
 }
 
+.page-header h1 {
+  font-family: 'Press Start 2P', cursive;
+}
+
+.logo {
+  color: #333333;
+  text-decoration: none;
+}
+.logo:hover {
+  text-decoration: none;
+}

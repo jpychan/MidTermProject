@@ -238,6 +238,8 @@ end
 
 get '/user/reset_requests' do
   if current_user
+    @received_requests = ResetRequest.where(:requested_id => @current_user.id)
+    @sent_requests = ResetRequest.where(:requester_id => @current_user.id)
     erb :'/users/reset_requests'
   else
     redirect '/users/login'

@@ -1,18 +1,60 @@
 <h1>Reset Requests</h1>
 
+<h2>Received Requests</h2>
+<% @received_requests.each do |request| %>
+
 <div class="row reset-request">
   <div class="col-md-9">
-    <h3>
-    <img src="/images/jenny.jpg" class="img-rounded" width="100">
-    
-    Bob would like to reset NHL match history with you.</h3>
+    <div class="col-md-2">
+
+    <img src="<%= request.requester.picture_url %>" class="img-rounded" width="100">
+    </div>
+    <div class="col-md-10">
+    <h3><%= request.requester.username %> would like to reset <%= request.game.title %> match history with you.</h3>
+    </div>
   </div>
   <div class="col-md-3">
-
-   <a class="btn btn-success btn-lg" href="#">
-  <i class="fa fa-check fa-2x fa-fw"></i></a>
-  <a class="btn btn-danger btn-lg" href="#">
-  <i class="fa fa-times fa-2x fa-fw"></i></a>
+    <form method="POST" action='#'>
+      <input type="hidden" name="game_id" value=""> 
+      <input type="hidden" name="" value="">
+      <a class="btn btn-success btn-lg" href="#">
+      <i class="fa fa-check fa-2x fa-fw"></i></a>
+      <a class="btn btn-danger btn-lg" href="#">
+      <i class="fa fa-times fa-2x fa-fw"></i></a>
+    </form>
   </div>
 
 </div>
+<% end %>
+
+<h2>Sent Requests</h2>
+
+<% @sent_requests.each do |request| %>
+
+<div class="row reset-request">
+
+ <div class="col-md-9">
+    <div class="col-md-2">
+
+    <img src="<%= request.requested.picture_url %>" class="img-rounded" width="100">
+    </div>
+    <div class="col-md-10">
+    <h3>
+    
+    You sent a request to <%= request.requested.username %> to reset your <%= request.game.title %> match history.</h3>
+  </div>
+  </div>
+  <div class="col-md-3">
+    <% if request.confirmed == false && request.rejected == false %>
+      <h3>Pending</h3>
+    <% elsif request.rejected == true %>
+      <h3>Rejected</h3>
+    <% elsif request.confirmed == true %>
+      <h3>Completed</h3>
+    <% end %>
+  </div>
+
+</div>
+<% end %>
+
+
