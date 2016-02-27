@@ -19,6 +19,7 @@ GEM
     bcrypt (3.1.10)
     bond (0.5.1)
     builder (3.2.2)
+    byebug (8.2.2)
     coderay (1.1.0)
     i18n (0.7.0)
     json (1.8.3)
@@ -29,6 +30,9 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-byebug (3.3.0)
+      byebug (~> 8.0)
+      pry (~> 0.10)
     puma (2.15.3)
     rack (1.6.4)
     rack-protection (1.5.3)
@@ -78,7 +82,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport
   bcrypt
-  pry
+  pry-byebug
   puma
   rake
   shotgun
@@ -87,3 +91,6 @@ DEPENDENCIES
   sinatra-contrib
   sqlite3
   tux
+
+BUNDLED WITH
+   1.11.2

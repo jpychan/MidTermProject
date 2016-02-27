@@ -95,29 +95,83 @@ get '/matches' do
 end
 
 get '/matches/new' do
+  @games = Game.all
   @match = Match.new
   erb :'matches/new'
 end
 
-# post '/matches/record' do
-#   @match = Match.new
-#   if @match.save
-#     redirect '/matches'
-#   else
-#     session[:flash] = "There was an error."
-#     redirect 'matches/new'
-#   end
-# end
+post '/matches/record' do
+  @game_id = params[:game]
+  @entered_username = params[:player2_username]
+  @player2 = User.find_by(:username => params[:player2_username])
+  if @player2 == nil
+    session[:flash] = "The username you entered does not exist."
+    redirect '/matches/new'
+  else
+    if params[:win] == "true"
+      winner_id = @current_user.id
+      loser_id = @player2.id
+    else
+      winner_id = @player2.id
+      loser_id = @current_user.id
+    end
+    @match = Match.new(
+      game_id: @game_id,
+      player1_id: @current_user.id,
+      player2_id: @player2.id,
+      winner_id: winner_id,
+      loser_id: loser_id)
 
-get '/matches/edit' do
-  @match = Match.find(:id)
-  erb :'matches/edit'
+    if @match.save
+      redirect '/matches'
+    else
+      session[:flash] = "There was an error."
+      redirect '/matches/new'
+    end
+  end
 end
 
-post '/matches/edit' do
-  #insert code from new match form when I have it
+get '/match/edit/:id' do
+  @games = Game.all
+  @match = Match.find(params[:id])
+  @player2 = @match.player2
+
+  if @match.participant?(@current_user.id)
+    erb :'matches/edit'
+  else
+    session[:flash] = "You didn't participate in that match!"
+    redirect '/matches'
+  end
 end
 
+post '/match/edit' do
+  @match = Match.find(params[:match_id])
+  @match.game_id = params[:game]
+  @match.player2 = User.find_by(:username => params[:player2_username])
+  if @match.player2 == nil
+    session[:flash] = "The username you entered does not exist."
+    redirect '/matches/new'
+  else
+    if params[:win] == "true"
+      @match.winner_id = @current_user.id
+      @match.loser_id = @match.player2.id
+    else
+      @match.winner_id = @match.player2.id
+      @match.loser_id = @current_user.id
+    end
+    
+    if @match.save
+      redirect '/matches'
+    else
+      session[:flash] = "Edit failed"
+      redirect '/match/edit/:id'
+    end
+  end
+end
+
+get '/users/' do
+  erb :'/users/matches'
+end
 
 get '/matches/user/:id' do
   @friend = User.find(params[:id])
@@ -140,9 +194,6 @@ get '/matches/user/:id' do
       matches: get_recent_matches(@me.id, @friend.id, game.id)
     }
   end
-
-  erb :'/users/matches'
-end
 
 get '/matches/user/:id/all' do
   @me = current_user

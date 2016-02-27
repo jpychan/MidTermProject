@@ -25,7 +25,18 @@
         <h1 class="text-primary">Score Keeper <small>#nomorearguments</small></h1>
       </div>
       <div class="col-md-4">
-        <a class="btn btn-lg btn-primary pull-right" href="/users/login">Login</a>
+        <% if @current_user %>
+          <a class="btn btn-lg btn-primary pull-right" href="/logout">
+          Logout
+          </a>
+          <a class="btn btn-lg btn-primary pull-right" href="/matches/new">
+            New Match
+          </a>
+
+        <% else %>
+          <a class="btn btn-lg btn-primary pull-right" href="/users/login">   Login
+          </a>
+        <% end %>
       </div>
     </div>
     <%= yield %>
