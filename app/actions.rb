@@ -86,19 +86,30 @@ end
 
 #Matches Views
 get '/matches' do
-  @matches = Match.all
-  @matches_by_me = @matches.where("winner_id = ? or loser_id = ?", current_user[:id], current_user[:id])
+  if current_user
 
-  @matches_by_me = @matches_by_me.group_by { |match| opponent(match, current_user.id) }
-  @matches_by_me = @matches_by_me.values.sort { |a, b| b.length <=> a.length}
+    @matches = Match.all
+    @matches_by_me = @matches.where("winner_id = ? or loser_id = ?", current_user[:id], current_user[:id])
 
-  erb :'matches/index'
+    @matches_by_me = @matches_by_me.group_by { |match| opponent(match, current_user.id) }
+    @matches_by_me = @matches_by_me.values.sort { |a, b| b.length <=> a.length}
+
+    erb :'matches/index'
+  else
+    session[:flash] = "Please sign up first!"
+    redirect '/users/signup'
+  end
 end
 
 get '/matches/new' do
-  @games = Game.all
-  @match = Match.new
-  erb :'matches/new'
+  if current_user
+    @games = Game.all
+    @match = Match.new
+    erb :'matches/new'
+  else
+    session[:flash] = "Please sign up first!"
+    redirect '/users/signup'
+  end
 end
 
 post '/matches/record' do
@@ -160,7 +171,7 @@ post '/match/edit' do
       @match.winner_id = @match.player2.id
       @match.loser_id = @current_user.id
     end
-    
+
     if @match.save
       redirect '/matches'
     else
@@ -192,10 +203,10 @@ get '/matches/user/:id' do
     @game_stats[game.title] = {
       wins: get_wins(@me.id, @friend.id, game.id),
       losses: get_loses(@me.id, @friend.id, game.id),
-      matches: get_recent_matches(@me.id, @friend.id, game.id)
+      matches: get_recent_matches(@me.id, @friend.id, game.id),
+      picture: game.picture_url
     }
   end
-
   erb :'/users/matches'
 end
 

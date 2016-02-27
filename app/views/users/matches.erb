@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  
+
   <a href="/matches"><h2>Back to overview</h2></a>
 
   <div class="col-md-12">
@@ -20,7 +20,7 @@
           <% if @me_overall_lose && @me_overall_lose > 1 %>
             <h4><%= @me_overall_lose %> Loses</h4>
           <% else %>
-            <h4><%= @me_overall_lose %> Lose</h4>
+            <h4><%= @me_overall_lose %> Loss</h4>
           <% end %>
         </div>
       </div>
@@ -61,10 +61,13 @@
           <ol>
             <% stats[:matches].each do |match|%>
               <li>MatchID: <%= match.id %> | Game Played on: <%= match.created_at %> | <%= match.winner == @me ? "WIN" : "LOSE" %>
-            </li>
+              </li>
             <hr width="50%" align="left">
             <% end %>
           </ol>
+        </div>
+        <div class="col-md-4">
+          <img src="<%=stats[:picture]%>"class="img-rounded" alt="Cinque Terre" width="200">
         </div>
       </div>
     </div>
