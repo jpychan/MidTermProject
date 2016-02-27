@@ -20,7 +20,12 @@
   font-size: 30px;
 }
 
-
+.friend-matches{
+    -moz-box-shadow: 0 0 2px black;
+    -webkit-box-shadow: 0 0 2px black;
+    box-shadow: 0 0 2px black;
+    padding: 30px;
+}
 .switch-field input {
   display: none;
 }
