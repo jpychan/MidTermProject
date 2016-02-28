@@ -28,41 +28,23 @@ helpers do
     Match.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).order(created_at: :desc)
   end
 
+  def pending_requests_count
+    @received_pending_requests_count = ResetRequest.where(requested_id: @current_user.id, confirmed: false, rejected: false).count
+  end
+
 end
 
 before do
   current_user
   check_flash
+  if @current_user
+    pending_requests_count
+  end
 end
 
 # Homepage (Root path)
 get '/' do
   erb :index
-end
-
-#User Login / Logout
-get '/users/login' do
-  if current_user
-    redirect '/matches'
-  else
-    erb :'users/login'
-  end
-end
-
-post '/users/login' do
-  @user = User.find_by(:username => params[:username])
-  if @user && @user.authenticate(params[:password])
-    session[:user_id] = @user.id
-    redirect '/'
-  else
-    session[:flash] = "Invalid login."
-    redirect '/users/login'  
-  end
-end
-
-get '/logout' do
-  session.clear
-  redirect '/'
 end
 
 #User Sign Up
@@ -92,9 +74,34 @@ post '/users/signup' do
   end
 end
 
+#User Login / Logout
+get '/users/login' do
+  if current_user
+    redirect '/matches'
+  else
+    erb :'users/login'
+  end
+end
+
+post '/users/login' do
+  @user = User.find_by(:username => params[:username])
+  if @user && @user.authenticate(params[:password])
+    session[:user_id] = @user.id
+    redirect '/'
+  else
+    session[:flash] = "Invalid login."
+    redirect '/users/login'  
+  end
+end
+
+get '/logout' do
+  session.clear
+  redirect '/'
+end
+
 #Matches Views
 get '/matches' do
-  if current_user
+  if @current_user
     @matches = Match.all
     @matches_by_me = @matches.where("winner_id = ? or loser_id = ?", current_user[:id], current_user[:id])
 
@@ -126,6 +133,9 @@ post '/matches/record' do
   if @player2 == nil
     session[:flash] = "The username you entered does not exist."
     redirect '/matches/new'
+  elsif @current_user == @player2
+    session[:flash] = "You can't be the opponent too!"
+    redirect '/matches/new'  
   else
     if params[:win] == "true"
       winner_id = @current_user.id
@@ -196,12 +206,11 @@ get '/users/' do
 end
 
 get '/user/reset_requests' do
-  if current_user
+  if @current_user
     @all_requests = ResetRequest.where("(requester_id = ?) or (requested_id = ?)", @current_user.id, @current_user.id)  
     @received_pending_requests = ResetRequest.where(requested_id: @current_user.id, confirmed: false, rejected: false).order(created_at: :desc)
     @sent_pending_requests = ResetRequest.where(requester_id: @current_user.id, confirmed: false, rejected: false).order(created_at: :desc)
-    # binding.pry
-    @completed_requests = @all_requests.where("(confirmed = ?) or (rejected = ?)", true, true).order(created_at: :desc)
+    @completed_requests = @all_requests.where("(confirmed = ?) or (rejected = ?)", true, true).order(updated_at: :desc)
     erb :'/users/reset_requests'
   else
     session[:flash] = "Please login first!"
@@ -210,38 +219,37 @@ get '/user/reset_requests' do
 end
 
 post '/matches/user/reset' do
-  @me = current_user
-  reset_request = ResetRequest.new(requester_id: @me.id, requested_id: params[:friend_id], game_id: params[:game_id])
+  reset_request = ResetRequest.new(requester_id: @current_user.id, requested_id: params[:friend_id], game_id: params[:game_id])
+    if reset_request.unique_pending_request?(@current_user.id, params[:friend_id], params[:game_id])
 
-  if reset_request.save
+    reset_request.save
     redirect "/user/reset_requests"
   else
-    session[:flash] = "Fail to request a reset"
+    session[:flash] = "There's already a pending request between you."
     redirect "/matches/user/#{params[:friend_id]}"
   end
-
 end
 
 post '/user/reset_requests/confirm' do
-  @request = ResetRequest.find(params[:request_id])
-  @request.confirmed = true
-  @request.save
+  @the_request = ResetRequest.find(params[:request_id])
+  @the_request.confirmed = true
+  @the_request.save
   @me = @current_user
-  @friend = @request.requester
+  @friend = @the_request.requester
   @matches = get_all_matches_a_friend(@me.id, @friend.id)
   @matches.destroy_all
-  # redirect '/user/reset_requests'
+  redirect '/user/reset_requests'
 end
 
 post '/user/reset_requests/reject' do
-  @request = ResetRequest.find(params[:request_id])
-  @request.rejected = true
-  @request.save
+  @the_request = ResetRequest.find(params[:request_id])
+  @the_request.rejected = true
+  @the_request.save
   redirect '/'
 end
 
 get '/matches/user/:id' do
-  if current_user
+  if @current_user
     @friend = User.find(params[:id])
 
     # WIP, test with User.find(1)
@@ -271,7 +279,7 @@ get '/matches/user/:id' do
 end
 
 get '/matches/user/:id/all' do
-  if current_user
+  if @current_user
     @me = current_user
     @friend = User.find(params[:id])
     #@friend = User.find(2)

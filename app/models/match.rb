@@ -1,19 +1,28 @@
 class Match < ActiveRecord::Base
 
-belongs_to :game
+  belongs_to :game
 
-belongs_to :player1,  class_name: "User",
-                      foreign_key: "player1_id"
-belongs_to :player2, class_name: "User",
-                      foreign_key: "player2_id"
-belongs_to :winner, class_name: "User",
-                    foreign_key: "winner_id"
-belongs_to :loser, class_name: "User",
-                    foreign_key: "loser_id"
+  belongs_to :player1,  class_name: "User",
+                        foreign_key: "player1_id"
+  belongs_to :player2, class_name: "User",
+                        foreign_key: "player2_id"
+  belongs_to :winner, class_name: "User",
+                      foreign_key: "winner_id"
+  belongs_to :loser, class_name: "User",
+                      foreign_key: "loser_id"
 
+  validate :player1_player2_are_different
 
-  #Make a method in the match model to check if the players are involved. Ex. @match.participant?(@current_user.id)
-  def participant?(current_user_id)
-    current_user_id == self.player1_id || self.player2_id
+  def player1_player2_are_different
+    if player1_id == player2_id
+      errors.add(:players, "The players can't be the same!")
+    end
   end
+
+  def participant?(current_user)
+    if current_user == player1_id || current_user == player2_id
+    end
+  end
+
+
 end

@@ -87,21 +87,20 @@
 
 .reset-request {
   margin: 30px;
-  border: 1px solid;
   border-radius: 5px;
   padding: 10px;
 }
 
 .complete {
-  border-color: #2b542c;
+  border: 1px solid #2b542c;
 }
 
 .pending {
-  border-color: #8a6d3b;
+  border: 1px solid #8a6d3b;
 }
 
 .reject {
-  border-color: #a94442
+  border: 1px solid #a94442;
 }
 
 .reset-request .img-rounded {
@@ -132,3 +131,7 @@
   /*float: right;*/
 }
 
+.flash {
+  padding: 10px;
+  margin-left: 10px;
+}

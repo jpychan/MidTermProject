@@ -17,30 +17,32 @@
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="/javascript/application.js"></script>
+  <title>ScoreKeeper</title>
 
-  <title></title>
 </head>
 <body>
   <div class="container">
     <div class="page-header row">
-      <div class="col-md-1 logo">
+      <div class="col-md-1 col-sm-2 col-xs-3 logo">
         <a href="/">
         <h1><i class="fa fa-gamepad fa-2x"></i></h1>
         </a>
       </div>
-      <div class="col-md-7">
+      <div class="col-md-7 col-sm-10 col-xs-8">
         <h1>ScoreKeeper</h1>
         <h3>#nomorearguments</h3>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 col-sm-12 col-xs-12">
         <% if @current_user %>
-          <a class="btn btn-lg btn-primary pull-right" href="/logout">
-          Logout
+          <a class="btn btn-lg btn-primary pull-right" href="/logout" title="Logout">
+          <i class="fa fa-sign-out"></i>
           </a>
-          <a class="btn btn-lg btn-primary pull-right" href="/matches/new">
-            New Match
+          <a class="btn btn-lg btn-primary pull-right" href="/matches/new" title="New Match">
+          New Match  
+            </a>
+          <a class="btn btn-lg btn-primary pull-right" href="/user/reset_requests" title="Reset Requests">
+          <i class="fa fa-envelope"></i> <span class="badge"><%= @received_pending_requests_count %></span>
           </a>
-
         <% else %>
           <a class="btn btn-lg btn-primary pull-right" href="/users/login">   Login
           </a>
