@@ -17,18 +17,10 @@
       </div>
       <div class="panel-body summary">
         <div class="col-md-6">
-          <% if @me_overall_win && @me_overall_win > 1 %>
-            <h4><%= @me_overall_win %> Wins</h4>
-          <% else %>
-            <h4><%= @me_overall_win %> Win</h4>
-          <% end %>
+          <h4>Wins: <%= @me_overall_win %></h4>
         </div>
         <div class="col-md-6">
-          <% if @me_overall_lose && @me_overall_lose > 1 %>
-            <h4><%= @me_overall_lose %> Losts</h4>
-          <% else %>
-            <h4><%= @me_overall_lose %> Loss</h4>
-          <% end %>
+          <h4>Loses: <%= @me_overall_lose %></h4>
         </div>
       </div>
     <% else %>
@@ -55,18 +47,10 @@
       </div>
       <div class="panel-body summary">
         <div class="col-md-6">
-          <% if stats[:wins] && stats[:wins].size > 1 %>
-            <h4><%= stats[:wins] %> Wins</h4>
-          <% else %>
-            <h4><%= stats[:wins] %> Win</h4>
-          <% end %>
+          <h4>Wins: <%= stats[:wins] %></h4>
         </div>
         <div class="col-md-6">
-          <% if stats[:losses] && stats[:losses].size > 1 %>
-            <h4><%= stats[:losses] %> Loss</h4>
-          <% else %>
-            <h4><%= stats[:losses] %> Lost</h4>
-          <% end %>
+          <h4>Loses: <%= stats[:losses] %></h4>
         </div>
       </div>
       <h2 class="history-h2">Match History Last 10</h2>
