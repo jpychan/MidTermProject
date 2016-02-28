@@ -104,6 +104,7 @@ get '/matches' do
 
     erb :'matches/index'
   else
+    session[:flash] = "Please login first!"
     redirect '/users/login'
   end
 end
@@ -179,7 +180,7 @@ post '/match/edit' do
       @match.winner_id = @match.player2.id
       @match.loser_id = @current_user.id
     end
-    
+
     if @match.save
       redirect '/matches'
     else
@@ -256,7 +257,8 @@ get '/matches/user/:id' do
       wins: get_wins(@me.id, @friend.id, game.id),
       losses: get_loses(@me.id, @friend.id, game.id),
       matches: get_recent_matches(@me.id, @friend.id, game.id),
-      game: game.id
+      game: game.id,
+      picture: game.picture_url
     }
     end
     erb :'/users/matches'

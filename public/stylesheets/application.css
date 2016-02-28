@@ -1,10 +1,18 @@
 .jumbotron {
-  background-image:url('../images/games.jpg');
+  background-image:url('/images/games.jpg');
   background-repeat: no-repeat;
   background-position: center;
 }
 
+.homepage {
+  padding-left: 0px;
+}
+
 .jumbotron h1{
+  color: #ffffff;
+}
+
+.jumbotron h4{
   color: #ffffff;
 }
 
@@ -16,7 +24,12 @@
   font-size: 30px;
 }
 
-
+.friend-matches{
+    -moz-box-shadow: 0 0 2px black;
+    -webkit-box-shadow: 0 0 2px black;
+    box-shadow: 0 0 2px black;
+    padding: 30px;
+}
 .switch-field input {
   display: none;
 }
@@ -111,3 +124,11 @@
 .logo a:hover {
   text-decoration: none;
 }
+
+.reset-btn {
+/*  margin-top: 20px;
+  margin-bottom: 10px;
+  padding: 10px, 15px, 10px, 15px;*/
+  /*float: right;*/
+}
+
