@@ -1,4 +1,5 @@
 helpers do
+  # This method 
   def current_user
     @current_user = User.find(session[:user_id]) if session[:user_id]
   end
@@ -56,7 +57,7 @@ post '/users/login' do
     redirect '/'
   else
     session[:flash] = "Invalid login."
-    redirect '/users/login'  
+    redirect '/users/login'
   end
 end
 
@@ -197,7 +198,7 @@ end
 
 get '/user/reset_requests' do
   if current_user
-    @all_requests = ResetRequest.where("(requester_id = ?) or (requested_id = ?)", @current_user.id, @current_user.id)  
+    @all_requests = ResetRequest.where("(requester_id = ?) or (requested_id = ?)", @current_user.id, @current_user.id)
     @received_pending_requests = ResetRequest.where(requested_id: @current_user.id, confirmed: false, rejected: false).order(created_at: :desc)
     @sent_pending_requests = ResetRequest.where(requester_id: @current_user.id, confirmed: false, rejected: false).order(created_at: :desc)
     # binding.pry
@@ -284,5 +285,3 @@ get '/matches/user/:id/all' do
     redirect '/users/login'
   end
 end
-
-

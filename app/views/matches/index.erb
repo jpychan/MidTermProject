@@ -21,6 +21,16 @@ current user is in either the winner_id or loser_id
     </div>
   </div>
 
+  <!--
+  This is where the match histories are shown. The matches_by_me instance variable
+  contains only the matches where the current user is in either the winner or loser
+  column. The opponent is then determined using the opponent helper method
+  and this is printed as the heading for each panel. The matches are then sorted
+  by when the were created so that most recent matches are shown at the top
+  and it limits the total list to the 5 most recent. The match histroy is grouped
+  by opponent and the winner and loser is identified for each. 
+  -->
+
     <div class="col-md-12">
       <div class="panel panel-success">
         <div class="panel-heading">
