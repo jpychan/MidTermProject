@@ -12,18 +12,26 @@ helpers do
     match.winner_id == user_id ? match.loser : match.winner
   end
 
+  # helper method of /matches/user/:id
+  # Get total wins of a current user against a friend
   def get_wins(user_id, friend_id, game_id)
     Match.where(winner_id: user_id, loser_id: friend_id, game_id: game_id).count(:winner_id)
   end
 
+  # helper method of /matches/user/:id
+  # Get total loss of a current user against a friend
   def get_loses(user_id, friend_id, game_id)
     Match.where(winner_id: friend_id, loser_id: user_id, game_id: game_id).count(:loser_id)
   end
 
+  # helper method of /matches/user/:id
+  # Get last 10 matches between current user and a friend, sorted by recent dates
   def get_recent_matches(user_id, friend_id, game_id)
     Match.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", user_id, friend_id, friend_id, user_id).where(game_id: game_id).order(created_at: :desc).limit(10)
   end
 
+  # helper method of /matches/user/:id
+  # Get all matches of current user against a friend in any games, sorted by recent dates
   def get_all_matches_a_friend(user_id, friend_id)
     Match.where("(player1_id = ? and player2_id = ?) or (player1_id = ? and player2_id = ?)", @me.id, @friend.id, @friend.id, @me.id).order(created_at: :desc)
   end
@@ -191,9 +199,9 @@ post '/match/edit' do
   end
 end
 
-get '/users/' do
-  erb :'/users/matches'
-end
+# get '/users/' do
+#   erb :'/users/matches'
+# end
 
 get '/user/reset_requests' do
   if current_user
@@ -209,6 +217,8 @@ get '/user/reset_requests' do
   end
 end
 
+# Controller for reset-form class in matches.erb
+# Create a new reset request into database
 post '/matches/user/reset' do
   @me = current_user
   reset_request = ResetRequest.new(requester_id: @me.id, requested_id: params[:friend_id], game_id: params[:game_id])
@@ -240,28 +250,28 @@ post '/user/reset_requests/reject' do
   redirect '/'
 end
 
+# Controller of matches.erb
+# If logged in, isplays a summary of matches between current user and a friend, 
+# overall number of wins and loss as well as the history on each game. 
 get '/matches/user/:id' do
   if current_user
     @friend = User.find(params[:id])
-
-    # WIP, test with User.find(1)
     @me = current_user
-    #@friend = User.find(3)
     @matches = Match.all
 
     # Query to get overall record
     @me_overall_win = @matches.where(winner_id: @me.id, loser_id: @friend.id).count(:winner_id)
     @me_overall_lose = @matches.where(winner_id: @friend.id, loser_id: @me.id).count(:loser_id)
 
-  @game_stats = {}
-  Game.all.each do |game|
-    @game_stats[game.title] = {
-      wins: get_wins(@me.id, @friend.id, game.id),
-      losses: get_loses(@me.id, @friend.id, game.id),
-      matches: get_recent_matches(@me.id, @friend.id, game.id),
-      game: game.id,
-      picture: game.picture_url
-    }
+    @game_stats = {}
+    Game.all.each do |game|
+      @game_stats[game.title] = {
+        wins: get_wins(@me.id, @friend.id, game.id),
+        losses: get_loses(@me.id, @friend.id, game.id),
+        matches: get_recent_matches(@me.id, @friend.id, game.id),
+        game: game.id,
+        picture: game.picture_url
+      }
     end
     erb :'/users/matches'
   else
@@ -270,11 +280,13 @@ get '/matches/user/:id' do
   end
 end
 
+# Controller of all_matches.erb
+# If logged in, display all matches between current user and a friend
+# Else a user has to login first
 get '/matches/user/:id/all' do
   if current_user
     @me = current_user
     @friend = User.find(params[:id])
-    #@friend = User.find(2)
 
     @me_and_friend_all_matches = get_all_matches_a_friend(@me.id, @friend.id)
 

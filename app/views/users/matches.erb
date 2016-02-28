@@ -1,3 +1,10 @@
+<!-- 
+  This page displays a summary of matches between current user and a friend, overall number of wins and loss as well as the history on each game. 
+ -->
+
+<!-- 
+  The first loop checks if an overall record exists, then it will display the information described above.
+-->
 <div class="container-fluid">
 
   <a href="/matches"><h2>Back to overview</h2></a>
@@ -6,7 +13,7 @@
     <div class="panel panel-primary">
     <% if @me_overall_win > 0 || @me_overall_lose > 0 %>
       <div class="panel-heading">
-        <h2>Your overall record against <%= @friend.name %></h2>
+        <h2>Your overall record against <%= @friend.username %></h2>
       </div>
       <div class="panel-body summary">
         <div class="col-md-6">
@@ -31,7 +38,10 @@
     <% end %>
     </div>
   </div>
-<!-- Loop each game's stats on last 10 matches between current user and a friend -->
+
+<!-- 
+ The second loop starts with checking if there at least a match exists between the players then display the recent 10 matches results between the players, tabulated in tables.
+-->
 <% @game_stats.each do |game, stats| %>
   <% if stats[:matches].size > 0 %>
   <div class="col-md-12">
@@ -92,6 +102,6 @@
   <% end %>
 <% end %>
 
-  <a href="/matches/user/<%= @friend.id%>/all"><h3>Show all matches you played with <%= @friend.name %></h3></a>
+  <a href="/matches/user/<%= @friend.id%>/all"><h3>Show all matches you played with <%= @friend.username %></h3></a>
 
 </div>
