@@ -92,7 +92,6 @@ post '/users/signup' do
   end
 end
 
-
 #Matches Views
 get '/matches' do
   if current_user
@@ -115,6 +114,7 @@ get '/matches/new' do
     @match = Match.new
     erb :'matches/new'
   else
+    session[:flash] = "Please login first!"
     redirect '/users/login'
   end
 end
@@ -161,6 +161,7 @@ get '/match/edit/:id' do
     session[:flash] = "You didn't participate in that match!"
     redirect '/matches'
   else
+    session[:flash] = "Please login first!"
     redirect '/users/login'
   end
 end
@@ -203,6 +204,7 @@ get '/user/reset_requests' do
     @completed_requests = @all_requests.where("(confirmed = ?) or (rejected = ?)", true, true).order(created_at: :desc)
     erb :'/users/reset_requests'
   else
+    session[:flash] = "Please login first!"
     redirect '/users/login'
   end
 end
@@ -263,6 +265,7 @@ get '/matches/user/:id' do
     end
     erb :'/users/matches'
   else
+    session[:flash] = "Please login first!"
     redirect '/users/login'
   end
 end
@@ -277,6 +280,7 @@ get '/matches/user/:id/all' do
 
     erb :'/users/all_matches'
   else
+    session[:flash] = "Please login first!"
     redirect '/users/login'
   end
 end
