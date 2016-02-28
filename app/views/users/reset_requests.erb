@@ -81,7 +81,7 @@
 <!-- Show all completed requests -->
 <!-- add .reject or .complete depending on the response -->
 <% @completed_requests.each do |request| %>
-  <div class="row reset-request">
+  <div class="row reset-request
     <% if request.rejected == true %>
       reject
     <% else %>
