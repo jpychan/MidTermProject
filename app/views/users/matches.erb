@@ -37,14 +37,11 @@
   <div class="col-md-12">
     <div class="panel panel-success">
       <div class="panel-heading">
-        <h2><%= game %> | <%= stats[:game] %></h2>
-        <div>
-            <form method="POST" action='/matches/user/reset'>
-              <input type="hidden" name="game_id" value="<%= stats[:game] %>"> 
-              <input type="hidden" name="friend_id" value="<%= @friend.id %>">
-              <input type="submit" class="btn btn-lg btn-primary clear-fix" value="Reset Record">
-            </form>
-        </div>
+        <h2><%= game %><form method="POST" action='/matches/user/reset'>
+          <input type="hidden" name="game_id" value="<%= stats[:game] %>"> 
+          <input type="hidden" name="friend_id" value="<%= @friend.id %>">
+          <input type="submit" class="btn btn-lg btn-danger clear-fix reset-btn" value="Reset Record">
+        </form></h2>
       </div>
       <div class="panel-body">
         <div class="col-md-6">
@@ -67,7 +64,7 @@
         <div class="col-md-8">
           <ol>
             <% stats[:matches].each do |match|%>
-              <li>Game Played on: <%= match.created_at %> | <%= match.winner == @me ? "WIN" : "LOSE" %> | <a href="/match/edit/<%= match.id %>">Edit Record</a>
+              <li>Game Played on: <%= match.created_at.in_time_zone("Pacific Time (US & Canada)").strftime("%A %F %T")%> | <%= match.winner == @me ? "WIN" : "LOSE" %> | <a href="/match/edit/<%= match.id %>">Edit Record</a>
             </li>
             <hr width="50%" align="left">
             <% end %>
