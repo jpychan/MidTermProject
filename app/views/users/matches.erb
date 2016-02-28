@@ -1,3 +1,10 @@
+<!-- 
+  This page displays a summary of matches between current user and a friend, overall number of wins and loss as well as the history on each game. 
+ -->
+
+<!-- 
+  The first loop checks if an overall record exists, then it will display the information described above.
+-->
 <div class="container-fluid">
 
   <a href="/matches"><h2>Back to overview</h2></a>
@@ -6,9 +13,9 @@
     <div class="panel panel-primary">
     <% if @me_overall_win > 0 || @me_overall_lose > 0 %>
       <div class="panel-heading">
-        <h2>Your overall record against <%= @friend.name %></h2>
+        <h2>Your overall record against <%= @friend.username %></h2>
       </div>
-      <div class="panel-body">
+      <div class="panel-body summary">
         <div class="col-md-6">
           <% if @me_overall_win && @me_overall_win > 1 %>
             <h4><%= @me_overall_win %> Wins</h4>
@@ -32,18 +39,21 @@
     </div>
   </div>
 
+<!-- 
+ The second loop starts with checking if there at least a match exists between the players then display the recent 10 matches results between the players, tabulated in tables.
+-->
 <% @game_stats.each do |game, stats| %>
   <% if stats[:matches].size > 0 %>
   <div class="col-md-12">
     <div class="panel panel-success">
       <div class="panel-heading">
-        <h2><%= game %><form method="POST" action='/matches/user/reset'>
+        <h2><%= game %><form class="reset-form" method="POST" action='/matches/user/reset'>
           <input type="hidden" name="game_id" value="<%= stats[:game] %>"> 
           <input type="hidden" name="friend_id" value="<%= @friend.id %>">
           <input type="submit" class="btn btn-lg btn-danger clear-fix reset-btn" value="Reset Record">
         </form></h2>
       </div>
-      <div class="panel-body">
+      <div class="panel-body summary">
         <div class="col-md-6">
           <% if stats[:wins] && stats[:wins].size > 1 %>
             <h4><%= stats[:wins] %> Wins</h4>
@@ -53,22 +63,35 @@
         </div>
         <div class="col-md-6">
           <% if stats[:losses] && stats[:losses].size > 1 %>
-            <h4><%= stats[:losses] %> Loses</h4>
+            <h4><%= stats[:losses] %> Loss</h4>
           <% else %>
-            <h4><%= stats[:losses] %> Lose</h4>
+            <h4><%= stats[:losses] %> Lost</h4>
           <% end %>
         </div>
       </div>
-      <h2>Match History Last 10</h2>
+      <h2 class="history-h2">Match History Last 10</h2>
       <div class="panel-body">
         <div class="col-md-8">
-          <ol>
-            <% stats[:matches].each do |match|%>
-              <li>Game Played on: <%= match.created_at.in_time_zone("Pacific Time (US & Canada)").strftime("%A %F %T")%> | <%= match.winner == @me ? "WIN" : "LOSE" %> | <a href="/match/edit/<%= match.id %>">Edit Record</a>
-            </li>
-            <hr width="50%" align="left">
+          <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Game Played On</th>
+              <th>Result</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% stats[:matches].each_with_index do |match, index|%>
+            <tr>
+              <td><%= index+1 %></td>
+              <td><%= match.created_at.in_time_zone("Pacific Time (US & Canada)").strftime("%A, %F %T")%></td>
+              <td><%= match.winner == current_user ? "WIN" : "LOSE"%></td>
+              <td><a href="/match/edit/<%= match.id %>">Edit Record</a></td>
+            </tr>
             <% end %>
-          </ol>
+          </tbody>
+        </table>
         </div>
         <div class="col-md-4">
           <img src="<%=stats[:picture]%>"class="img-rounded" alt="Cinque Terre" width="200">
@@ -79,11 +102,6 @@
   <% end %>
 <% end %>
 
-
-<!-- <pre>
-<%= @game_stats.inspect %>
-</pre> -->
-
-  <a href="/matches/user/<%= @friend.id%>/all"><h3>Show all matches you played with <%= @friend.name %></h3></a>
+  <a href="/matches/user/<%= @friend.id%>/all"><h3>Show all matches you played with <%= @friend.username %></h3></a>
 
 </div>

@@ -124,11 +124,29 @@
   text-decoration: none;
 }
 
-.reset-btn {
-/*  margin-top: 20px;
-  margin-bottom: 10px;
-  padding: 10px, 15px, 10px, 15px;*/
-  /*float: right;*/
+/*
+ related file: matches.erb
+ position the button on the right and make it inline-block
+*/
+.reset-form {
+  display: inline-block;
+  float: right;
+}
+
+.reset-form .btn {
+  margin: -10px 30px auto auto;
+}
+
+/*
+ related file: matches.erb
+ align some headers into center
+*/
+.summary .col-md-6 h4{
+  text-align: center;
+}
+
+.history-h2 {
+  text-align: center;
 }
 
 .flash {
