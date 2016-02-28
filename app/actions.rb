@@ -111,7 +111,7 @@ end
 # array is the person you play the most and this person shows up at the top of the
 # list.
 # If a user is not logged in, a flash is shown and the user is redirected to
-# the login page. 
+# the login page.
 get '/matches' do
   if current_user
     @matches = Match.all
@@ -130,6 +130,7 @@ end
 get '/matches/new' do
   if current_user
     @games = Game.all
+    @users = User.all
     @match = Match.new
     erb :'matches/new'
   else
