@@ -1,5 +1,12 @@
 <div class="container-fluid">
 
+<%= erb :show_flash %>
+<!--
+This is the heading of the matches page, it shows the overall record
+of the logged in user. The full list of matches is loaded into the instance
+variable and it is refined by narrowing down the list to those in which the
+current user is in either the winner_id or loser_id
+-->
   <div class="col-md-12">
     <div class="panel panel-primary">
       <div class="panel-heading">
@@ -16,6 +23,16 @@
     </div>
   </div>
 
+  <!--
+  This is where the match histories are shown. The matches_by_me instance variable
+  contains only the matches where the current user is in either the winner or loser
+  column. The opponent is then determined using the opponent helper method
+  and this is printed as the heading for each panel. The matches are then sorted
+  by when the were created so that most recent matches are shown at the top
+  and it limits the total list to the 5 most recent. The match histroy is grouped
+  by opponent and the winner and loser is identified for each. 
+  -->
+
     <div class="col-md-12">
       <div class="panel panel-success">
         <div class="panel-heading">
@@ -26,7 +43,7 @@
             <div class="friend-matches">
               <div class="row">
                 <div class="col-md-6">
-                  <a href="/matches/user/<%= opponent(matches[0], current_user.id).id %>/all"><h2><%= opponent(matches[0], current_user.id).name %></h2></a>
+                  <a href="/matches/user/<%= opponent(matches[0], current_user.id).id %>"><h2><%= opponent(matches[0], current_user.id).username %></h2></a>
                   <img src="<%= opponent(matches[0], current_user.id).picture_url %>" class="img-rounded" alt="Cinque Terre" width="200">
                 </div>
                 <div class="col-md-6">
@@ -35,10 +52,10 @@
                   <% break if i == 5 %>
                   <h3><%= match.game.title %></h3>
                   <p>
-                    Winner: <%= match.winner.name %>
+                    Winner: <%= match.winner.username %>
                   </p>
                   <p>
-                    Loser: <%= match.loser.name %>
+                    Loser: <%= match.loser.username %>
                   </p>
                 <% end %>
               </div>

@@ -1,37 +1,47 @@
-<div>
-  
-<h1>Edit Your Match</h1>
+<%= erb :show_flash %>
 
-<form class="new-match center-block col-md-8" method="POST" action="/match/edit">
+<div>
+  <h1>Edit Your Match</h1>
+
+  <!-- Edit Match Form -->
+  <form class="new-match center-block col-md-8" method="POST" action="/match/edit">
+    <!-- Embed match ID info -->
+    <input type="hidden" name="match_id" value="<%= @match.id %>">
     <fieldset class="form-group">
-      <input type="hidden" name="match_id" value="<%= @match.id %>">
+
       <label for="game">Game: </label>
       <select class="form-control input-lg" name="game" id="game">
-          <% @games.each do |game| %>
-            <option value="<%= game.id %>"
-              <% if @match.game_id == game.id %> 
-                selected
-              <% end %>
-              ><%= game.title %></option>
-           <% end %>
-       </select>
-    </fieldset>
+        <!-- Inputs all game titles from database in the dropdown -->
+        <% @games.each do |game| %>
+        <!-- Shows the game title stored in database as default -->
+        <option value="<%= game.id %>"
+          <% if @match.game_id == game.id %> 
+          selected
+          <% end %>
+          ><%= game.title %></option>
+          <% end %>
+        </select>
+      </fieldset>
 
-    <fieldset class="form-group">
-      <label for="player2_username">Opponent's Username: </label>
-      <input type="text" class="form-control input-lg" name="player2_username" id="player2_username" value="<%= @player2.username %>">
-    </fieldset>
-    <div class="form-group">
-      <label>Did you win?</label>
-      <div class="switch-field col-xs-12">
-        <input type="radio" id="win" name="win" value="true"
+      <fieldset class="form-group">
+        <label for="player2_username">Opponent's Username: </label>
+        <input type="text" class="form-control input-lg" name="player2_username" id="player2_username" value="<%= @player2.username %>">
+      </fieldset>
+
+      <div class="form-group">
+        <label>Did you win?</label>
+
+        <!-- Shows the match result in database as default -->
+        <div class="switch-field col-xs-12">
+          <input type="radio" id="win" name="win" value="true"
           <%= @match.winner.id == @current_user.id ? 'checked' : '' %>/>
-        <label for="win">Yes</label>
-        <input type="radio" id="loss" name="win" value="false" 
+          <label for="win">Yes</label>
+          <input type="radio" id="loss" name="win" value="false" 
           <%= @match.loser.id == @current_user.id ? 'checked' : '' %>/>
-        <label for="loss">No</label>
+          <label for="loss">No</label>
+        </div>
       </div>
-    </div>
-    <input type="submit" class="btn btn-lg btn-primary clear-fix" value="Submit">
-  </form>
-</div>
+      
+      <input type="submit" class="btn btn-lg btn-primary clear-fix" value="Submit">
+    </form>
+  </div>
