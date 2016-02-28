@@ -1,3 +1,5 @@
 <% if @flash %>
-  <p style="border: 1px solid red; padding: 10px; color: red;"><%= @flash %></p>
+<div class="flash reject">
+  <h3 class="text-danger"><i class="fa fa-exclamation-triangle"></i> <%= @flash %></h3>
+</div>
 <% end %>
