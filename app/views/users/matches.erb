@@ -1,7 +1,7 @@
 <div class="container-fluid">
 
   <a href="/matches"><h2>Back to overview</h2></a>
-
+  <%= erb :show_flash %>
   <div class="col-md-12">
     <div class="panel panel-primary">
     <% if @me_overall_win > 0 || @me_overall_lose > 0 %>
@@ -18,7 +18,7 @@
         </div>
         <div class="col-md-6">
           <% if @me_overall_lose && @me_overall_lose > 1 %>
-            <h4><%= @me_overall_lose %> Loses</h4>
+            <h4><%= @me_overall_lose %> Losts</h4>
           <% else %>
             <h4><%= @me_overall_lose %> Loss</h4>
           <% end %>
@@ -37,7 +37,11 @@
   <div class="col-md-12">
     <div class="panel panel-success">
       <div class="panel-heading">
-        <h2><%= game %></h2>
+        <h2><%= game %><form method="POST" action='/matches/user/reset'>
+          <input type="hidden" name="game_id" value="<%= stats[:game] %>"> 
+          <input type="hidden" name="friend_id" value="<%= @friend.id %>">
+          <input type="submit" class="btn btn-lg btn-danger clear-fix reset-btn" value="Reset Record">
+        </form></h2>
       </div>
       <div class="panel-body">
         <div class="col-md-6">
@@ -60,8 +64,8 @@
         <div class="col-md-8">
           <ol>
             <% stats[:matches].each do |match|%>
-              <li>MatchID: <%= match.id %> | Game Played on: <%= match.created_at %> | <%= match.winner == @me ? "WIN" : "LOSE" %>
-              </li>
+              <li>Game Played on: <%= match.created_at.in_time_zone("Pacific Time (US & Canada)").strftime("%A %F %T")%> | <%= match.winner == @me ? "WIN" : "LOSE" %> | <a href="/match/edit/<%= match.id %>">Edit Record</a>
+            </li>
             <hr width="50%" align="left">
             <% end %>
           </ol>

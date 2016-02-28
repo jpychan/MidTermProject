@@ -84,3 +84,51 @@
 .btn {
   margin: 10px;
 }
+
+.reset-request {
+  margin: 30px;
+  border: 1px solid;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.complete {
+  border-color: #2b542c;
+}
+
+.pending {
+  border-color: #8a6d3b;
+}
+
+.reject {
+  border-color: #a94442
+}
+
+.reset-request .img-rounded {
+  width: 100px;
+}
+
+.reset-request .btn{
+  padding: 10px;
+  margin-top: 20%;
+}
+
+.page-header h1 {
+  font-family: 'Press Start 2P', cursive;
+}
+
+.logo a {
+  color: #333333;
+  text-decoration: none;
+}
+.logo a:hover {
+  text-decoration: none;
+}
+
+.reset-btn {
+/*  margin-top: 20px;
+  margin-bottom: 10px;
+  padding: 10px, 15px, 10px, 15px;*/
+  /*float: right;*/
+}
+

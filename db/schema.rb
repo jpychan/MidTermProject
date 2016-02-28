@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160225225810) do
+<<<<<<< HEAD
+ActiveRecord::Schema.define(version: 20160227113510) do
+=======
+ActiveRecord::Schema.define(version: 20160227190819) do
+>>>>>>> reset-history
 
   create_table "games", force: :cascade do |t|
     t.string   "title"
@@ -34,10 +38,11 @@ ActiveRecord::Schema.define(version: 20160225225810) do
   create_table "reset_requests", force: :cascade do |t|
     t.integer  "requester_id"
     t.integer  "requested_id"
-    t.integer  "games_id"
+    t.integer  "game_id"
     t.boolean  "confirmed",    default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "rejected",     default: false
   end
 
   create_table "users", force: :cascade do |t|
