@@ -1,14 +1,22 @@
 helpers do
-  # This method 
+  # This method assigns a user object to the instance variable
+  # @current_user if there is a user_id assigned to the session.
+  # The method returns the instance variable and has no side effects.
   def current_user
     @current_user = User.find(session[:user_id]) if session[:user_id]
   end
 
+  # This method assigns the session flash to an instance variable
+  # if there is value assigned to the flash hash. Takes no input,
+  # returns nil. Has no side effects.
   def check_flash
     @flash = session[:flash] if session[:flash]
     session[:flash] = nil
   end
 
+  # This method takes a match object and a user_id as input. The method returns
+  # the id of the player that is not the input user_id. The method has no
+  # side effects
   def opponent(match, user_id)
     match.winner_id == user_id ? match.loser : match.winner
   end
@@ -93,7 +101,17 @@ post '/users/signup' do
   end
 end
 
-#Matches Views
+# This get route first determines if someone is logged in to the site.
+# If they are, then all of the matches objects are loaded into an instance variable
+# named matches. These objects are refined into a new instance variable @matches_by_me
+# which contain only the matches that include the current_user as either in the
+# winner or loser column. This variable is an array of arrays.
+# The matches objects are then grouped by oppoent using the opponent helper method.
+# The arrays are then sorted by length decending. The opponent with the longest
+# array is the person you play the most and this person shows up at the top of the
+# list.
+# If a user is not logged in, a flash is shown and the user is redirected to
+# the login page. 
 get '/matches' do
   if current_user
     @matches = Match.all
