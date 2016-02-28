@@ -192,9 +192,8 @@ get '/match/edit/:id' do
   @games = Game.all
   @match = Match.find(params[:id])
   @player2 = @match.player2
-
   if @match.participant?(@current_user.id)
-    erb :'matches/edit'
+    erb :'/matches/edit'
   elsif current_user
     session[:flash] = "You didn't participate in that match!"
     redirect '/matches'

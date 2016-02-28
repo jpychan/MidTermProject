@@ -23,8 +23,9 @@ class Match < ActiveRecord::Base
 
   #Checks that the current user is a participant of the match
   #Used in editing a match
-  def participant?(current_user)
-    if current_user == player1_id || current_user == player2_id
+  def participant?(current_user_id)
+    if current_user_id == player1_id || current_user_id == player2_id
+      true
     end
   end
 
