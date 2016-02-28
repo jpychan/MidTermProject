@@ -1,113 +1,124 @@
 <h1>Reset Requests</h1>
 
+<!-- Show header if there are received pending requests -->
 <% if @received_pending_requests.count > 0 %>
-
-<h2>Received Requests</h2>
+  <h2>Received Requests</h2>
 <% end %>
+
+<!-- Display all the received pending requests -->
 <% @received_pending_requests.each do |request| %>
+  <div class="row reset-request complete">
+    <div class="col-md-9 col-xs-12 col-sm-12">
+      <div class="row">
+        <!-- Requester Picture -->
+        <div class="col-md-2 text-center">
+          <img src="<%= request.requester.picture_url %>" class="img-rounded" width="100">
+        </div>
+        <!-- Request Message -->
+        <div class="col-md-10 col-xs-12 col-sm-12">
+          <h3><%= request.requester.username %> would like to reset <%= request.game.title %> match history with you.</h3>
+          <p>Request sent <%= request.created_at.in_time_zone("Pacific Time (US & Canada)").strftime("%A %F %T") %></p>
+        </div>
+      </div>
+    </div>
 
-<div class="row reset-request complete">
-  <div class="col-md-9 col-xs-12 col-sm-12">
-    <div class="row">
-    <div class="col-md-2 text-center">
-      <img src="<%= request.requester.picture_url %>" class="img-rounded" width="100">
-    </div>
-    <div class="col-md-10 col-xs-12 col-sm-12">
-     <h3><%= request.requester.username %> would like to reset <%= request.game.title %> match history with you.</h3>
-    <p>Request sent <%= request.created_at.in_time_zone("Pacific Time (US & Canada)").strftime("%A %F %T") %></p>
-   </div>
-    </div>
-  </div>
-  <div class="col-md-3 col-xs-12 col-sm-12">
-  <div class="row">
-  <div class="col-md-4 col-xs-offset-2 col-xs-4 col-sm-offset-3 col-sm-4 ">
-    <form method="POST" action='/user/reset_requests/confirm'>
-      <input type="hidden" name="request_id" value="<%= request.id %>"> 
-      <button type="submit" class="btn btn-success btn-lg">
-        <i class="fa fa-check fa-2x fa-fw"></i>
-      </button>
-     </form>
-    </div>
-    <div class="col-md-4 col-xs-4 col-sm-4">
-    <form method="POST" action='/user/reset_requests/reject'>
-      <input type="hidden" name="request_id" value="<%= request.id %>"> 
-      <button type="submit" class="btn btn-danger btn-lg">
-        <i class="fa fa-times fa-2x fa-fw"></i>
-      </button>
-    </form>
-    </div>
-    </div>
+    <!-- Confirm / Reject buttons -->
+    <div class="col-md-3 col-xs-12 col-sm-12">
+      <div class="row">
+        <div class="col-md-4 col-xs-offset-2 col-xs-4 col-sm-offset-3 col-sm-4 ">
+          <form method="POST" action='/user/reset_requests/confirm'>
+            <input type="hidden" name="request_id" value="<%= request.id %>"> 
+            <button type="submit" class="btn btn-success btn-lg">
+              <i class="fa fa-check fa-2x fa-fw"></i>
+            </button>
+           </form>
+        </div>
+        <div class="col-md-4 col-xs-4 col-sm-4">
+          <form method="POST" action='/user/reset_requests/reject'>
+            <input type="hidden" name="request_id" value="<%= request.id %>"> 
+            <button type="submit" class="btn btn-danger btn-lg">
+             <i class="fa fa-times fa-2x fa-fw"></i>
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 <% end %>
 
+<!-- Show header if there are sent pending requests -->
 <% if @sent_pending_requests.count > 0 %>
-
-<h2>Sent Requests</h2>
-
+  <h2>Sent Requests</h2>
 <% end %>
+
+<!-- Displays all sent requests waiting for response -->
 <% @sent_pending_requests.each do |request| %>
+  <div class="row reset-request pending">
+    <div class="col-md-9">
+      <div class="col-md-2 text-center">
+        <!-- Requested player picture -->
+        <img src="<%= request.requested.picture_url %>" class="img-rounded" width="100">
+      </div>
 
-<div class="row reset-request pending">
-
- <div class="col-md-9">
-    <div class="col-md-2 text-center">
-
-    <img src="<%= request.requested.picture_url %>" class="img-rounded" width="100">
+      <div class="col-md-10">
+        <!-- Request details -->
+        <h3>You sent a request to <%= request.requested.username %> to reset your <%= request.game.title %> match history.</h3>
+        <p>Request sent <%= request.created_at.in_time_zone("Pacific Time (US & Canada)").strftime("%A %F %T") %></p>
+      </div>
     </div>
-    <div class="col-md-10">
-    <h3>    
-      You sent a request to <%= request.requested.username %> to reset your <%= request.game.title %> match history.</h3>
-      <p>Request sent <%= request.created_at.in_time_zone("Pacific Time (US & Canada)").strftime("%A %F %T") %></p>
-  </div>
-  </div>
-  <div class="col-md-3 text-center">
-    <h3 class="text-warning">Pending</h3>
-  </div>
 
-</div>
+    <div class="col-md-3 text-center">
+      <h3 class="text-warning">Pending</h3>
+    </div>
+  </div>
 <% end %>
 
+<!-- Display if there are completed requests -->
 <% if @completed_requests.count > 0 %>
-<h2>Completed Requests</h2>
+  <h2>Completed Requests</h2>
 <% end %>
+
+<!-- Show all completed requests -->
+<!-- add .reject or .complete depending on the response -->
 <% @completed_requests.each do |request| %>
-
-<div class="row reset-request
-<% if request.rejected == true %>
-reject
-<% else %>
-complete
-<% end %>
-">
-
- <div class="col-md-9">
-    <div class="col-md-2 text-center">
-
-    <img src="<%= request.requested.picture_url %>" class="img-rounded" width="100">
-    </div>
-    <div class="col-md-10">
-    <% if request.requester.id == @current_user.id %>
-    <h3>    
-    Your request to <%= request.requested.username %> to reset your <%= request.game.title %> match history.</h3>
-        <p>Response received <%= request.updated_at.in_time_zone("Pacific Time (US & Canada)").strftime("%A %F %T") %></p>
-    <% else %>
-    <h3>    
-    <h3><%= request.requester.username %>'s request to reset your <%= request.game.title %> match history.</h3>
-        <p>Response sent <%= request.updated_at.in_time_zone("Pacific Time (US & Canada)").strftime("%A %F %T") %></p>
-    <% end %> 
-
-
-  </div>
-  </div>
-  <div class="col-md-3 text-center">
+  <div class="row reset-request">
     <% if request.rejected == true %>
-      <h3 class="text-danger">Rejected</h3>
+      reject
     <% else %>
-      <h3 class="text-success">Completed</h3>
+      complete
     <% end %>
+    ">
+    
+    <!-- Shows two different versions depending if current user initiated the request -->
+    <div class="col-md-9">
+    <!-- If current user initiated -->
+      <% if request.requester.id == @current_user.id %>
+        <div class="col-md-2 text-center">
+          <img src="<%= request.requested.picture_url %>" class="img-rounded" width="100">
+        </div>
+        <div class="col-md-10">
+          <h3>Your request to <%= request.requested.username %> to reset your <%= request.game.title %> match history.</h3>
+          <p>Response received <%= request.updated_at.in_time_zone("Pacific Time (US & Canada)").strftime("%A %F %T") %></p>
+          </div>
+      <% else %>
+      <!-- If current user received request -->
+        <div class="col-md-2 text-center">
+          <img src="<%= request.requester.picture_url %>" class="img-rounded" width="100">
+        </div>
+        <div class="col-md-10">
+          <h3><%= request.requester.username %>'s request to reset your <%= request.game.title %> match history.</h3>
+          <p>Response sent <%= request.updated_at.in_time_zone("Pacific Time (US & Canada)").strftime("%A %F %T") %></p>
+        </div>
+      <% end %> 
+    </div>
+    <!-- Show response -->
+    <div class="col-md-3 text-center">
+      <% if request.rejected == true %>
+        <h3 class="text-danger">Rejected</h3>
+      <% else %>
+        <h3 class="text-success">Completed</h3>
+      <% end %>
+    </div>
   </div>
-
-</div>
 <% end %>
 

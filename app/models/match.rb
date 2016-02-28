@@ -13,16 +13,19 @@ class Match < ActiveRecord::Base
 
   validate :player1_player2_are_different
 
+  #Checks that the players are different before saving the match
+  #Used in posting a new match
   def player1_player2_are_different
     if player1_id == player2_id
       errors.add(:players, "The players can't be the same!")
     end
   end
 
+  #Checks that the current user is a participant of the match
+  #Used in editing a match
   def participant?(current_user)
     if current_user == player1_id || current_user == player2_id
     end
   end
-
 
 end

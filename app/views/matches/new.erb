@@ -1,34 +1,38 @@
 <%= erb :show_flash %>
- 
- <div>
 
-  <h1>Record Your Match</h1>
-  
-  <form class="new-match center-block col-md-8" method="POST" action="/matches/record">
-    <fieldset class="form-group">
-      <label for="game">Game: </label>
-      <select class="form-control input-lg" name="game" id="game">
-          <% @games.each do |game| %>
-              <option value="<%= game.id %>"><%= game.title %></option>
-           <% end %>
-           </select>
-    </fieldset>
+<div>
 
-    <fieldset class="form-group">
-      <label for="player2_username">Opponent's Username: </label>
-      <input type="text" class="form-control input-lg" name="player2_username" id="player2_username" value="<%= @entered_username %>">
-    </fieldset>
-    <div class="form-group">
-      <label>Did you win?</label>
-      <div class="switch-field col-xs-12">
-        <input type="radio" id="win" name="win" value="true" checked/>
-        <label for="win">Yes</label>
-        <input type="radio" id="loss" name="win" value="false" />
-        <label for="loss">No</label>
-      </div>
+<h1>Record Your Match</h1>
+
+<!-- New Match Form -->
+<form class="new-match center-block col-md-8" method="POST" action="/matches/record">
+  <fieldset class="form-group">
+    <label for="game">Game: </label>
+    <select class="form-control input-lg" name="game" id="game">
+      <% @games.each do |game| %>
+          <option value="<%= game.id %>"><%= game.title %></option>
+       <% end %>
+    </select>
+  </fieldset>
+
+  <fieldset class="form-group">
+    <label for="player2_username">Opponent's Username: </label>
+    <input type="text" class="form-control input-lg" name="player2_username" id="player2_username" value="<%= @entered_username %>">
+  </fieldset>
+
+  <div class="form-group">
+    <label>Did you win?</label>
+    <div class="switch-field col-xs-12">
+      <input type="radio" id="win" name="win" value="true" checked/>
+      <label for="win">Yes</label>
+      <input type="radio" id="loss" name="win" value="false" />
+      <label for="loss">No</label>
     </div>
-    <input type="submit" class="btn btn-lg btn-primary clear-fix" value="Submit">
-  </form>
+  </div>
+
+  <input type="submit" class="btn btn-lg btn-primary clear-fix" value="Submit">
+
+</form>
 </div>
 
 
