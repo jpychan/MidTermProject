@@ -195,14 +195,47 @@ end
 
 get '/user/reset_requests' do
   if current_user
-    @received_requests = ResetRequest.where(:requested_id => @current_user.id)
-    @sent_requests = ResetRequest.where(:requester_id => @current_user.id)
+    @all_requests = ResetRequest.where("(requester_id = ?) or (requested_id = ?)", @current_user.id, @current_user.id)  
+    @received_pending_requests = ResetRequest.where(requested_id: @current_user.id, confirmed: false, rejected: false).order(created_at: :desc)
+    @sent_pending_requests = ResetRequest.where(requester_id: @current_user.id, confirmed: false, rejected: false).order(created_at: :desc)
+    # binding.pry
+    @completed_requests = @all_requests.where("(confirmed = ?) or (rejected = ?)", true, true).order(created_at: :desc)
     erb :'/users/reset_requests'
   else
     redirect '/users/login'
   end
 end
 
+post '/matches/user/reset' do
+  @me = current_user
+  reset_request = ResetRequest.new(requester_id: @me.id, requested_id: params[:friend_id], game_id: params[:game_id])
+
+  if reset_request.save
+    redirect "/user/reset_requests"
+  else
+    session[:flash] = "Fail to request a reset"
+    redirect "/matches/user/#{params[:friend_id]}"
+  end
+
+end
+
+post '/user/reset_requests/confirm' do
+  @request = ResetRequest.find(params[:request_id])
+  @request.confirmed = true
+  @request.save
+  @me = @current_user
+  @friend = @request.requester
+  @matches = get_all_matches_a_friend(@me.id, @friend.id)
+  @matches.destroy_all
+  # redirect '/user/reset_requests'
+end
+
+post '/user/reset_requests/reject' do
+  @request = ResetRequest.find(params[:request_id])
+  @request.rejected = true
+  @request.save
+  redirect '/'
+end
 
 get '/matches/user/:id' do
   if current_user
@@ -216,16 +249,6 @@ get '/matches/user/:id' do
     # Query to get overall record
     @me_overall_win = @matches.where(winner_id: @me.id, loser_id: @friend.id).count(:winner_id)
     @me_overall_lose = @matches.where(winner_id: @friend.id, loser_id: @me.id).count(:loser_id)
-
-
-    @game_stats = {}
-    Game.all.each do |game|
-      @game_stats[game.title] = {
-        wins: get_wins(@me.id, @friend.id, game.id),
-        losses: get_loses(@me.id, @friend.id, game.id),
-        matches: get_recent_matches(@me.id, @friend.id, game.id)
-      }
-    end
 
   @game_stats = {}
   Game.all.each do |game|
@@ -257,15 +280,3 @@ get '/matches/user/:id/all' do
 end
 
 
-post '/matches/user/reset' do
-  @me = current_user
-  reset_request = ResetRequest.new(requester_id: @me.id, requested_id: params[:friend_id], game_id: params[:game_id])
-
-  if reset_request.save
-    redirect "/user/reset_requests"
-  else
-    session[:flash] = "Fail to request a reset"
-    redirect "/matches/user/#{params[:friend_id]}"
-  end
-
-end

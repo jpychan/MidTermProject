@@ -8,4 +8,5 @@
   belongs_to :requested, class_name: "User",
                           foreign_key: "requested_id"
 
+  
 end
