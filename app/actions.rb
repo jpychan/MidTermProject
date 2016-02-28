@@ -42,7 +42,11 @@ end
 
 #User Login / Logout
 get '/users/login' do
-  erb :'users/login'
+  if current_user
+    redirect '/matches'
+  else
+    erb :'users/login'
+  end
 end
 
 post '/users/login' do
@@ -52,7 +56,8 @@ post '/users/login' do
     redirect '/'
   else
     session[:flash] = "Invalid login."
-    redirect '/users/login'  end
+    redirect '/users/login'  
+  end
 end
 
 get '/logout' do
@@ -63,8 +68,12 @@ end
 #User Sign Up
 
 get '/users/signup' do
-  @user = User.new
-  erb :'users/signup_form'
+  if current_user
+    redirect '/matches'
+  else
+    @user = User.new
+    erb :'users/signup_form'
+  end
 end
 
 post '/users/signup' do
@@ -87,16 +96,16 @@ end
 #Matches Views
 get '/matches' do
   if current_user
-
     @matches = Match.all
     @matches_by_me = @matches.where("winner_id = ? or loser_id = ?", current_user[:id], current_user[:id])
 
     @matches_by_me = @matches_by_me.group_by { |match| opponent(match, current_user.id) }
     @matches_by_me = @matches_by_me.values.sort { |a, b| b.length <=> a.length}
+
     erb :'matches/index'
   else
-    session[:flash] = "Please sign up first!"
-    redirect '/users/signup'
+    session[:flash] = "Please login first!"
+    redirect '/users/login'
   end
 end
 
@@ -106,8 +115,7 @@ get '/matches/new' do
     @match = Match.new
     erb :'matches/new'
   else
-    session[:flash] = "Please sign up first!"
-    redirect '/users/signup'
+    redirect '/users/login'
   end
 end
 
@@ -149,9 +157,11 @@ get '/match/edit/:id' do
 
   if @match.participant?(@current_user.id)
     erb :'matches/edit'
-  else
+  elsif current_user
     session[:flash] = "You didn't participate in that match!"
     redirect '/matches'
+  else
+    redirect '/users/login'
   end
 end
 
@@ -185,43 +195,16 @@ get '/users/' do
 end
 
 get '/user/reset_requests' do
-  "Hello, world!"
-end 
-
-get '/matches/user/:id' do
-  @friend = User.find(params[:id])
-
-  # WIP, test with User.find(1)
-  @me = current_user
-  #@friend = User.find(3)
-  @matches = Match.all
-
-  # Query to get overall record
-  @me_overall_win = @matches.where(winner_id: @me.id, loser_id: @friend.id).count(:winner_id)
-  @me_overall_lose = @matches.where(winner_id: @friend.id, loser_id: @me.id).count(:loser_id)
-
-
-  @game_stats = {}
-  Game.all.each do |game|
-    @game_stats[game.title] = {
-      wins: get_wins(@me.id, @friend.id, game.id),
-      losses: get_loses(@me.id, @friend.id, game.id),
-      matches: get_recent_matches(@me.id, @friend.id, game.id),
-      game: game.id,
-      picture: game.picture_url
-    }
+  if current_user
+    @all_requests = ResetRequest.where("(requester_id = ?) or (requested_id = ?)", @current_user.id, @current_user.id)  
+    @received_pending_requests = ResetRequest.where(requested_id: @current_user.id, confirmed: false, rejected: false).order(created_at: :desc)
+    @sent_pending_requests = ResetRequest.where(requester_id: @current_user.id, confirmed: false, rejected: false).order(created_at: :desc)
+    # binding.pry
+    @completed_requests = @all_requests.where("(confirmed = ?) or (rejected = ?)", true, true).order(created_at: :desc)
+    erb :'/users/reset_requests'
+  else
+    redirect '/users/login'
   end
-  erb :'/users/matches'
-end
-
-get '/matches/user/:id/all' do
-  @me = current_user
-  @friend = User.find(params[:id])
-  #@friend = User.find(2)
-
-  @me_and_friend_all_matches = get_all_matches_a_friend(@me.id, @friend.id)
-
-  erb :'/users/all_matches'
 end
 
 post '/matches/user/reset' do
@@ -236,3 +219,66 @@ post '/matches/user/reset' do
   end
 
 end
+
+post '/user/reset_requests/confirm' do
+  @request = ResetRequest.find(params[:request_id])
+  @request.confirmed = true
+  @request.save
+  @me = @current_user
+  @friend = @request.requester
+  @matches = get_all_matches_a_friend(@me.id, @friend.id)
+  @matches.destroy_all
+  # redirect '/user/reset_requests'
+end
+
+post '/user/reset_requests/reject' do
+  @request = ResetRequest.find(params[:request_id])
+  @request.rejected = true
+  @request.save
+  redirect '/'
+end
+
+get '/matches/user/:id' do
+  if current_user
+    @friend = User.find(params[:id])
+
+    # WIP, test with User.find(1)
+    @me = current_user
+    #@friend = User.find(3)
+    @matches = Match.all
+
+    # Query to get overall record
+    @me_overall_win = @matches.where(winner_id: @me.id, loser_id: @friend.id).count(:winner_id)
+    @me_overall_lose = @matches.where(winner_id: @friend.id, loser_id: @me.id).count(:loser_id)
+
+  @game_stats = {}
+  Game.all.each do |game|
+    @game_stats[game.title] = {
+      wins: get_wins(@me.id, @friend.id, game.id),
+      losses: get_loses(@me.id, @friend.id, game.id),
+      matches: get_recent_matches(@me.id, @friend.id, game.id),
+      game: game.id,
+      picture: game.picture_url
+    }
+    end
+    erb :'/users/matches'
+  else
+    redirect '/users/login'
+  end
+end
+
+get '/matches/user/:id/all' do
+  if current_user
+    @me = current_user
+    @friend = User.find(params[:id])
+    #@friend = User.find(2)
+
+    @me_and_friend_all_matches = get_all_matches_a_friend(@me.id, @friend.id)
+
+    erb :'/users/all_matches'
+  else
+    redirect '/users/login'
+  end
+end
+
+

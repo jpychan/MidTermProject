@@ -7,6 +7,8 @@
     See: http://necolas.github.com/normalize.css/
   -->
   <link rel="stylesheet" href="/stylesheets/bootstrap.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
 
   <!--
     application.css is where you put your styles
@@ -21,8 +23,14 @@
 <body>
   <div class="container">
     <div class="page-header row">
-      <div class="col-md-8">
-        <a href="/"><h1 class="text-primary">Score Keeper <small>#nomorearguments</small></h1></a>
+      <div class="col-md-1 logo">
+        <a href="/">
+        <h1><i class="fa fa-gamepad fa-2x"></i></h1>
+        </a>
+      </div>
+      <div class="col-md-7">
+        <h1>ScoreKeeper</h1>
+        <h3>#nomorearguments</h3>
       </div>
       <div class="col-md-4">
         <% if @current_user %>

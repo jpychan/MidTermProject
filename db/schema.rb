@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20160227113510) do
+=======
+ActiveRecord::Schema.define(version: 20160227190819) do
+>>>>>>> reset-history
 
   create_table "games", force: :cascade do |t|
     t.string   "title"

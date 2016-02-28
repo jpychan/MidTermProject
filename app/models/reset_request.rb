@@ -1,4 +1,4 @@
-class ResetRequest < ActiveRecord::Base
+ class ResetRequest < ActiveRecord::Base
 
   belongs_to :game
 
@@ -8,4 +8,5 @@ class ResetRequest < ActiveRecord::Base
   belongs_to :requested, class_name: "User",
                           foreign_key: "requested_id"
 
+  
 end
