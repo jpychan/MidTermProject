@@ -145,7 +145,7 @@ end
 get '/matches/new' do
   if current_user
     @games = Game.all
-    @users = User.all
+    @users = User.all.order(:username)
     @match = Match.new
     erb :'matches/new'
   else

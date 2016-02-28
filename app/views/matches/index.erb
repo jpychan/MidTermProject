@@ -41,7 +41,7 @@ current user is in either the winner_id or loser_id
             <div class="friend-matches">
               <div class="row">
                 <div class="col-md-6">
-                  <a href="/matches/user/<%= opponent(matches[0], current_user.id).id %>/all"><h2><%= opponent(matches[0], current_user.id).username %></h2></a>
+                  <a href="/matches/user/<%= opponent(matches[0], current_user.id).id %>"><h2><%= opponent(matches[0], current_user.id).username %></h2></a>
                   <img src="<%= opponent(matches[0], current_user.id).picture_url %>" class="img-rounded" alt="Cinque Terre" width="200">
                 </div>
                 <div class="col-md-6">
