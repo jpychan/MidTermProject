@@ -93,7 +93,6 @@ get '/matches' do
 
     @matches_by_me = @matches_by_me.group_by { |match| opponent(match, current_user.id) }
     @matches_by_me = @matches_by_me.values.sort { |a, b| b.length <=> a.length}
-
     erb :'matches/index'
   else
     session[:flash] = "Please sign up first!"
