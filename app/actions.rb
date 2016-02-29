@@ -270,7 +270,6 @@ post '/user/reset_requests/confirm' do
   @me = @current_user
   @friend = @the_request.requester
   @matches = get_all_matches_a_friend_a_game(@me.id, @friend.id, params[:game_id])
-  binding.pry
   @matches.destroy_all
   redirect '/user/reset_requests'
 end
