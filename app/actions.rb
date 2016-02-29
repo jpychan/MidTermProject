@@ -49,6 +49,10 @@ helpers do
     @received_pending_requests_count = ResetRequest.where(requested_id: @current_user.id, confirmed: false, rejected: false).count
   end
 
+  def get_all_matches_a_friend_a_game(user_id, friend_id, game_id)
+     Match.where("(player1_id = ? and player2_id = ? and game_id = ?) or (player1_id = ? and player2_id = ? and game_id = ?)", user_id, friend_id, game_id, friend_id, user_id, game_id)
+  end
+
 end
 
 before do
@@ -265,7 +269,7 @@ post '/user/reset_requests/confirm' do
   @the_request.save
   @me = @current_user
   @friend = @the_request.requester
-  @matches = get_all_matches_a_friend(@me.id, @friend.id)
+  @matches = get_all_matches_a_friend_a_game(@me.id, @friend.id, params[:game_id])
   @matches.destroy_all
   redirect '/user/reset_requests'
 end
