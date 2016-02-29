@@ -195,6 +195,7 @@ end
 get '/match/edit/:id' do
   @games = Game.all
   @match = Match.find(params[:id])
+  @users = User.all.order(:username)
   @player2 = @match.player2
   if @match.participant?(@current_user.id)
     erb :'/matches/edit'
