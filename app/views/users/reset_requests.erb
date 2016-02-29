@@ -1,8 +1,8 @@
-<h1>Reset Requests</h1>
+<h1 class="page-heading">Reset Requests</h1>
 
 <!-- Show header if there are received pending requests -->
 <% if @received_pending_requests.count > 0 %>
-  <h2>Received Requests</h2>
+  <h2 class="page-heading">Received Requests</h2>
 <% end %>
 
 <!-- Display all the received pending requests -->
@@ -49,7 +49,7 @@
 
 <!-- Show header if there are sent pending requests -->
 <% if @sent_pending_requests.count > 0 %>
-  <h2>Sent Requests</h2>
+  <h2 class="page-heading">Sent Requests</h2>
 <% end %>
 
 <!-- Displays all sent requests waiting for response -->
@@ -76,7 +76,7 @@
 
 <!-- Display if there are completed requests -->
 <% if @completed_requests.count > 0 %>
-  <h2>Completed Requests</h2>
+  <h2 class="page-heading">Completed Requests</h2>
 <% end %>
 
 <!-- Show all completed requests -->

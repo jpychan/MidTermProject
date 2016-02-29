@@ -10,7 +10,7 @@ current user is in either the winner_id or loser_id
   <div class="col-md-12">
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h2>Your matches</h2>
+        <h2 class="page-heading">Your matches</h2>
       </div>
       <div class="panel-body">
         <div class="col-md-6">
@@ -36,21 +36,21 @@ current user is in either the winner_id or loser_id
     <div class="col-md-12">
       <div class="panel panel-success">
         <div class="panel-heading">
-          <h2>Five Most Recent Friends Matches</h2>
+          <h2 class="page-heading">Five Most Recent Friends Matches</h2>
         </div>
         <div class="panel-body">
           <% @matches_by_me.each do |matches| %>
             <div class="friend-matches">
               <div class="row">
                 <div class="col-md-6">
-                  <a href="/matches/user/<%= opponent(matches[0], current_user.id).id %>"><h2><%= opponent(matches[0], current_user.id).username %></h2></a>
-                  <img src="<%= opponent(matches[0], current_user.id).picture_url %>" class="img-rounded" alt="Cinque Terre" width="200">
+                  <a href="/matches/user/<%= opponent(matches[0], current_user.id).id %>"><h2 class="page-heading"><%= opponent(matches[0], current_user.id).username %></h2></a>
+                  <img src="<%= opponent(matches[0], current_user.id).picture_url %>" class="img-rounded" alt="user profile picture" width="200">
                 </div>
                 <div class="col-md-6">
                   <% matches.sort! { |a,b| b.created_at <=> a.created_at } %>
                 <% matches.each_with_index do |match, i| %>
                   <% break if i == 5 %>
-                  <h3><%= match.game.title %></h3>
+                  <h3 class="page-heading"><%= match.game.title %></h3>
                   <p>
                     Winner: <%= match.winner.username %>
                   </p>

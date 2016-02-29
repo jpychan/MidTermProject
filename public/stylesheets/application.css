@@ -1,3 +1,4 @@
+/*Home Page*/
 .jumbotron {
   background-image:url('/images/games.jpg');
   background-repeat: no-repeat;
@@ -16,20 +17,60 @@
   color: #ffffff;
 }
 
+.footer {
+  margin-top: 30px;
+}
+
+.page-header h1 {
+  font-family: 'Press Start 2P', cursive;
+}
+
+@media (max-width: 600px) {
+  .page-header h1 {
+    font-size: 26px;
+  }
+}
+.logo a {
+  color: #333333;
+  text-decoration: none;
+}
+
+.logo a:hover {
+  text-decoration: none;
+}
+
+
+
+/*layout and overriding default bootstrap styles*/
+.footer {
+  margin-left: 30px;
+}
+
+.page-heading {
+  font-family: 'Bree Serif', serif;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+}
+
+.btn {
+  margin: 10px;
+}
+.flash {
+  padding: 10px;
+  margin-left: 10px;
+}
+
+/*New Match and Edit Match Forms*/
 .new-match {
   margin-top: 30px;
 }
 
 .new-match label {
-  font-size: 30px;
+  font-size: 26px;
 }
 
-.friend-matches{
-    -moz-box-shadow: 0 0 2px black;
-    -webkit-box-shadow: 0 0 2px black;
-    box-shadow: 0 0 2px black;
-    padding: 30px;
-}
 .switch-field input {
   display: none;
 }
@@ -77,13 +118,14 @@
   border-radius: 5px;
 }
 
-.footer {
-  margin-top: 30px;
+.friend-matches{
+  -moz-box-shadow: 0 0 2px black;
+  -webkit-box-shadow: 0 0 2px black;
+  box-shadow: 0 0 2px black;
+  padding: 30px;
 }
 
-.btn {
-  margin: 10px;
-}
+/*Reset Requests Page*/
 
 .reset-request {
   margin: 30px;
@@ -112,17 +154,6 @@
   margin-top: 20%;
 }
 
-.page-header h1 {
-  font-family: 'Press Start 2P', cursive;
-}
-
-.logo a {
-  color: #333333;
-  text-decoration: none;
-}
-.logo a:hover {
-  text-decoration: none;
-}
 
 /*
  related file: matches.erb
@@ -147,9 +178,4 @@
 
 .history-h2 {
   text-align: center;
-}
-
-.flash {
-  padding: 10px;
-  margin-left: 10px;
 }

@@ -5,15 +5,15 @@
 <!-- 
   The first loop checks if an overall record exists, then it will display the information described above.
 -->
-<div class="container-fluid">
+<div>
 
-  <a href="/matches"><h2>Back to overview</h2></a>
+  <a href="/matches"><h2 class="page-heading"> << Back to overview</h2></a>
   <%= erb :show_flash %>
   <div class="col-md-12">
     <div class="panel panel-primary">
     <% if @me_overall_win > 0 || @me_overall_lose > 0 %>
       <div class="panel-heading">
-        <h2>Your overall record against <%= @friend.username %></h2>
+        <h2 class="page-heading">Your overall record against <%= @friend.username %></h2>
       </div>
       <div class="panel-body summary">
         <div class="col-md-6">
@@ -25,7 +25,7 @@
       </div>
     <% else %>
       <div class="panel-heading">
-        <h2>You do not have any record against <%= @friend.name %></h2>
+        <h2 class="page-heading">You do not have any record against <%= @friend.name %></h2>
       </div>
     <% end %>
     </div>
@@ -39,7 +39,7 @@
   <div class="col-md-12">
     <div class="panel panel-success">
       <div class="panel-heading">
-        <h2><%= game %><form class="reset-form" method="POST" action='/matches/user/reset'>
+        <h2 class="page-heading"><%= game %><form class="reset-form" method="POST" action='/matches/user/reset'>
           <input type="hidden" name="game_id" value="<%= stats[:game] %>"> 
           <input type="hidden" name="friend_id" value="<%= @friend.id %>">
           <input type="submit" class="btn btn-lg btn-danger clear-fix reset-btn" value="Reset Record">
@@ -53,7 +53,7 @@
           <h4>Loses: <%= stats[:losses] %></h4>
         </div>
       </div>
-      <h2 class="history-h2">Match History Last 10</h2>
+      <h2 class="history-h2 page-heading">10 Most Recent Matches</h2>
       <div class="panel-body">
         <div class="col-md-8">
           <table class="table">
@@ -70,7 +70,7 @@
             <tr>
               <td><%= index+1 %></td>
               <td><%= match.created_at.in_time_zone("Pacific Time (US & Canada)").strftime("%A, %F %T")%></td>
-              <td><%= match.winner == current_user ? "WIN" : "LOSE"%></td>
+              <td><%= match.winner == current_user ? "WIN" : "LOSS"%></td>
               <td><a href="/match/edit/<%= match.id %>">Edit Record</a></td>
             </tr>
             <% end %>
