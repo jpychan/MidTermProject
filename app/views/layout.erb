@@ -38,7 +38,7 @@
           <i class="fa fa-sign-out"></i>
           </a>
           <a class="btn btn-lg btn-primary pull-right" href="/matches/new" title="New Match">
-          New Match  
+          New Match
             </a>
           <a class="btn btn-lg btn-primary pull-right" href="/user/reset_requests" title="Reset Requests">
           <i class="fa fa-envelope"></i> <span class="badge"><%= @received_pending_requests_count %></span>
@@ -53,6 +53,11 @@
     <div class="row">
       <footer class="footer col-md-12">
         <p>Copyright Jenny, Reinhard and Steve</p>
+        <% if @current_user %>
+          <p>
+            You are logged in as <%=@current_user.username %>
+          </p>
+        <% end %>
       </footer>
    </div>
   </div>
