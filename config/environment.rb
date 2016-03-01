@@ -8,6 +8,8 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/contrib/all' # Requires cookies, among other things
 require 'bcrypt'
+
+
 require 'pry-byebug' if development?
 
 
