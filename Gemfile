@@ -18,6 +18,6 @@ group :development, :test do
   gem 'sqlite3'
 end
 
-gem :production do
+group :production do
   gem 'pg'
 end
