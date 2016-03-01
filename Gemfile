@@ -17,3 +17,9 @@ group :development, :test do
   gem 'shotgun'
   gem 'sqlite3'
 end
+
+group :production
+  gem 'pry-byebug'
+  gem 'pg'
+  gem 'sqlite3'
+end
