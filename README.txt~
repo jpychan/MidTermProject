@@ -8,7 +8,7 @@ Brought to you by Lighthouse Labs
 1. `bundle install`
 2. `shotgun -p 3000 -o 0.0.0.0`
 3. Visit `http://localhost:3000/` in your browser
-4. To see a demo account, login with the username "noob" or "SBguru" and password: 123456.
+4. To see a demo account, login with the username: and password: .
 
 
 Features of the app
