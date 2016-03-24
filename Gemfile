@@ -11,6 +11,7 @@ gem 'sinatra-activerecord'
 gem 'puma'
 gem 'tux'
 gem 'bcrypt'
+gem 'seed_dump'
 
 group :development, :test do
   gem 'pry-byebug'

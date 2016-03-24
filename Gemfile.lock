@@ -48,6 +48,9 @@ GEM
       rack (>= 1.0)
       rack-test (~> 0.6.2)
       ripl (>= 0.7.0)
+    seed_dump (3.2.4)
+      activerecord (>= 4)
+      activesupport (>= 4)
     shotgun (0.9.1)
       rack (>= 1.0)
     sinatra (1.4.6)
@@ -85,9 +88,13 @@ DEPENDENCIES
   pry-byebug
   puma
   rake
+  seed_dump
   shotgun
   sinatra
   sinatra-activerecord
   sinatra-contrib
   sqlite3
   tux
+
+BUNDLED WITH
+   1.11.2
