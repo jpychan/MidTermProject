@@ -1,7 +1,6 @@
 ScoreKeeper - Keep track of your console game matches with you friends!
 =============
-
-Brought to you by Lighthouse Labs
+See the demo here: https://secure-coast-10788.herokuapp.com/
 
 ## Getting Started
 
